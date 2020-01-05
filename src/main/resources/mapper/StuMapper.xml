@@ -8,7 +8,7 @@
 
     
      <insert id="addStu" >
-        insert into stu(stuno,name,psw,sex,phone,qq,photo)values (#{stuno},#{name},#{psw},#{sex},#{phone},#{qq},#{photo})
+        insert into stu(stuno,name,psw,sex,grade,scalss,speciality)values (#{stuno},#{name},#{psw},#{sex},#{grade},#{scalss},#{speciality})
     </insert>
     
 
@@ -60,9 +60,9 @@
 			  <if test="name!=null">name=#{name},</if>
 			  <if test="psw!=null">psw=#{psw},</if>
 			  <if test="sex!=null">sex=#{sex},</if>
-			  <if test="phone!=null">phone=#{phone},</if>
-			  <if test="qq!=null">qq=#{qq},</if>
-			   <if test="photo!=null">photo=#{photo},</if>
+			  <if test="grade!=null">grade=#{grade},</if>
+			  <if test="scalss!=null">scalss=#{scalss},</if>
+			   <if test="speciality!=null">speciality=#{speciality},</if>
 		 </trim>
 		WHERE id in (select id from (select id from stu where stuno = #{oldNum}) t1 )
 	</update>

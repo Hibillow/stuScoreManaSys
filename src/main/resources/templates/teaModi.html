@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>注册LAU</title>
+    <title>修改信息</title>
 
 
     
@@ -60,85 +60,7 @@
     </div>
     
     </div>
-    
-    
-    
-<div class="layui-form-item">
-		
- <label class="layui-form-label">教授班级</label>
- <div class="layui-input-inline">
-<select name="gra_class" xm-select="select6_5" xm-select-skin="danger"  lay-filter="gra_class">
-    <option value="201601">201601</option>
-    <option value="201602" >201602</option>
-    <option value="201603">201603</option>
-    <option value="201701" >201701</option>
-    <option value="201702">201702</option>
-    <option value="201703" >201703</option>
-    <option value="201801" >201801</option>
-    <option value="201802">201802</option>
-    <option value="201803" >201803</option>
-</select>
-</div>
 
-
- <label class="layui-form-label">教授科目</label>
-    <div class="layui-input-inline">
-      <select name="course" id="course">
-        <option value="">请选择科目</option>
-        <option value="c001" >高数</option>
-        <option value="c002">java</option>
-        <option value="c003">linux</option>
-        <option value="c004">javaWeb</option>
-        <option value="c005">android</option>
-        <option value="c006">数据结构</option>
-        <option value="c007">数据库</option>
-      </select>
-    </div>
-
-	</div>
-  
-  
-  
-    
-      
-
-    
-	<div class="layui-form-item">
-	<div class="layui-inline">
-        <label class="layui-form-label"><i class="iconfont layui-icon-extend-QQ"></i>QQ</label>
-        <div class="layui-input-block">
-            <input type="text" id = "qq" name="qq" placeholder="请输入QQ" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    
-    
-    
-    
-
-	<div class="layui-inline">
-        <label class="layui-form-label"><i class="iconfont layui-icon-extend-icon-test"></i>手机号</label>
-        <div class="layui-input-block">
-            <input type="text" id="phone" name="phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    </div>
-    
-    
-
-    
-
-
-
-	
-
-  
-<div class="layui-upload" style="margin-top: 20px;text-align:center">
- 
-    
-    <button type="button" class="layui-btn layui-btn-primary"  id="test1"><i class="layui-icon">&#xe67c;</i>选择文件</button>
-                  
-   <img   id="demo1"  style="width:30px;height:30px;padding-left: 200px;">
-</div>   
     <div class="layui-form-item lau-sign-other" style="margin-top: 20px;text-align:center">
         <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="updateTea" style="margin-right: 100px">提交</button>
        
@@ -164,22 +86,8 @@
 		  		$('#psw').val(datajson.data[0].psw)
 		  		$("input[name=sex][value='男']").attr("checked", datajson.data[0].sex == '男' ? true : false);
 	          $("input[name=sex][value='女']").attr("checked",  datajson.data[0].sex == '女' ? true : false);
-		  		$('#phone').val(datajson.data[0].phone)
-		  		$('#qq').val(datajson.data[0].qq)		  		
-		  		$('#phone').val(datajson.data[0].phone)
-		  		
 		  	  }
 		  });
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	   
-	  var imgpath;	  
 		var   url= ''
 	   layui.use('upload', function(){
 		   var $ = layui.jquery
@@ -236,7 +144,6 @@
 	           form.on('submit(updateTea)', function(data) {
 	               var updateJson= data.field;
 	                updateJson.oldNum = num;
-					updateJson.photo=imgpath;
 					data=JSON.stringify(updateJson)
 					$.ajax({
 		               	 url : 'updateTea',
@@ -244,12 +151,14 @@
 		                 type:'POST',
 		                 contentType: 'application/json',
 		                 success:function(data){
-		                	 layer.msg("修改成功！",function(){
-		                            
-		                        });
+                             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                             parent.location.reload();//刷新父页面，注意一定要在关闭当前iframe层之前执行刷新
+                             parent.layer.close(index); //再执行关闭
+                             layer.msg("修改成功！",function(){
+                             });
 		                 },
 		                 error:function(args){
-		                	 layer.msg("账号已经存在或者信息未填完整，注册失败！",function(){
+		                	 layer.msg("账号已经存在或者信息未填完整，修改失败！",function(){
 		                         
 		                     });
 		                 }

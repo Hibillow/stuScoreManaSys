@@ -66,44 +66,32 @@
      
      
     </div>
-    
 
-
-	<div class="layui-form-item">
-		 <div class="layui-inline">
-         <label class="layui-form-label"><i class="iconfont layui-icon-extend-icon-test"></i>手机号</label>
-        <div class="layui-input-block">
-            <input type="text" name="phone" id="phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">专业</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="speciality" id="speciality" placeholder="请输入专业" autocomplete="off" class="layui-input">
+            </div>
         </div>
-        </div>
-	
-	
-	
-		<div class="layui-inline">
-        <label class="layui-form-label"><i class="iconfont layui-icon-extend-QQ"></i>QQ</label>
-        <div class="layui-input-block">
-            <input type="text" name="qq" id="qq" placeholder="请输入QQ" autocomplete="off" class="layui-input">
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">班级</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="scalss" id="sClass" placeholder="请输入班级" autocomplete="off" class="layui-input">
+            </div>
         </div>
     </div>
-        
-        
-       
-        
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">入学年份</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="grade" id="grade" placeholder="请输入学年" autocomplete="off" class="layui-input">
+            </div>
+        </div>
     </div>
 
-
-
-	
-
-
-
-  
-<div class="layui-upload" style="margin-top: 20px;text-align:center">
-    <button type="button" class="layui-btn layui-btn-primary" id="test1"><i class="layui-icon">&#xe67c;</i>选择文件</button>           
-   <img   id="demo1"  style="width:30px;height:30px;padding-left: 200px;">
-</div>   
     <div class="layui-form-item lau-sign-other" style="margin-top: 20px;text-align:center">
-        <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="updateStu" style="margin-right: 100px">提&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;交</button>
+        <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="updateStu" style="margin-right: 100px">提&nbsp;&nbsp;交</button>
        
     </div>
 
@@ -130,9 +118,9 @@
 	  		$('#repsw').val(datajson.data[0].psw)
 	  		$("input[name=sex][value='男']").attr("checked", datajson.data[0].sex == '男' ? true : false);
           $("input[name=sex][value='女']").attr("checked",  datajson.data[0].sex == '女' ? true : false);
-	  		$('#phone').val(datajson.data[0].phone)
-	  		$('#qq').val(datajson.data[0].qq)
-	  		$('#phone').val(datajson.data[0].phone)
+	  		$('#grade').val(datajson.data[0].grade)
+	  		$('#sClass').val(datajson.data[0].scalss)
+	  		$('#speciality').val(datajson.data[0].speciality)
 	  	  }
 	  });
 	  var imgpath;
@@ -184,9 +172,11 @@
 	                 type:'POST',
 	                 contentType: 'application/json',
 	                 success:function(data){
-	                	 layer.msg("修改成功！",function(){
-	                            
-	                        });
+                         var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                         parent.location.reload();//刷新父页面，注意一定要在关闭当前iframe层之前执行刷新
+                         parent.layer.close(index); //再执行关闭
+                         layer.msg("修改成功！",function(){
+                         });
 	                 },
 	                 error:function(args){
 	                	 layer.msg("账号已经存在或者信息未填完整，注册失败！",function(){

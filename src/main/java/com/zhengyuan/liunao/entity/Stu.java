@@ -5,21 +5,21 @@ public class Stu {
 	private String name;
 	private String psw;
 	private String sex;
-	private String phone;
-	private String qq;
-	private String photo;
+	private String grade;
+	private String scalss;
+	private String speciality;
+
+
+
 	public Stu() {
 		super();
 	}
-	public Stu(String stuno, String name, String psw, String sex, String phone, String qq, String photo) {
+	public Stu(String stuno, String name, String psw, String sex) {
 		super();
 		this.stuno = stuno;
 		this.name = name;
 		this.psw = psw;
 		this.sex = sex;
-		this.phone = phone;
-		this.qq = qq;
-		this.photo = photo;
 	}
 	public Stu(String stuno, String name, String sex) {
 		super();
@@ -52,28 +52,34 @@ public class Stu {
 	public void setSex(String sex) {
 		this.sex = sex;
 	}
-	public String getPhone() {
-		return phone;
+
+	public String getGrade() {
+		return grade;
 	}
-	public void setPhone(String phone) {
-		this.phone = phone;
+
+	public void setGrade(String grade) {
+		this.grade = grade;
 	}
-	public String getQq() {
-		return qq;
+
+	public String getScalss() {
+		return scalss;
 	}
-	public void setQq(String qq) {
-		this.qq = qq;
+
+	public void setScalss(String scalss) {
+		this.scalss = scalss;
 	}
-	public String getPhoto() {
-		return photo;
+
+	public String getSpeciality() {
+		return speciality;
 	}
-	public void setPhoto(String photo) {
-		this.photo = photo;
+
+	public void setSpeciality(String speciality) {
+		this.speciality = speciality;
 	}
+
 	@Override
 	public String toString() {
-		return "Stu [stuno=" + stuno + ", name=" + name + ", psw=" + psw + ", sex=" + sex + ", phone=" + phone + ", qq="
-				+ qq + ", photo=" + photo + "]";
+		return "Stu [stuno=" + stuno + ", name=" + name + ", psw=" + psw + ", sex=" + sex + "]";
 	}
 	
 	

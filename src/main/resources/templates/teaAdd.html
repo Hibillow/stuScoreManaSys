@@ -60,85 +60,7 @@
     </div>
     
     </div>
-    
-    
-    
-<div class="layui-form-item">
-		
- <label class="layui-form-label">教授班级</label>
- <div class="layui-input-inline">
-<select name="gra_class" xm-select="select6_5" xm-select-skin="danger"  lay-filter="gra_class">
-    <option value="201601">201601</option>
-    <option value="201602" >201602</option>
-    <option value="201603">201603</option>
-    <option value="201701" >201701</option>
-    <option value="201702">201702</option>
-    <option value="201703" >201703</option>
-    <option value="201801" >201801</option>
-    <option value="201802">201802</option>
-    <option value="201803" >201803</option>
-</select>
-</div>
 
-
- <label class="layui-form-label">教授科目</label>
-    <div class="layui-input-inline">
-      <select name="course">
-        <option value="">请选择科目</option>
-        <option value="c001" >高数</option>
-        <option value="c002">java</option>
-        <option value="c003">linux</option>
-        <option value="c004">javaWeb</option>
-        <option value="c005">android</option>
-        <option value="c006">数据结构</option>
-        <option value="c007">数据库</option>
-      </select>
-    </div>
-
-	</div>
-  
-  
-  
-    
-      
-
-    
-	<div class="layui-form-item">
-	<div class="layui-inline">
-        <label class="layui-form-label"><i class="iconfont layui-icon-extend-QQ"></i>QQ</label>
-        <div class="layui-input-block">
-            <input type="text" name="qq" placeholder="请输入QQ" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    
-    
-    
-    
-
-	<div class="layui-inline">
-        <label class="layui-form-label"><i class="iconfont layui-icon-extend-icon-test"></i>手机号</label>
-        <div class="layui-input-block">
-            <input type="text" name="phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    </div>
-    
-    
-
-    
-
-
-
-	
-
-  
-<div class="layui-upload" style="margin-top: 20px;text-align:center">
- 
-    
-    <button type="button" class="layui-btn layui-btn-primary"  id="test1"><i class="layui-icon">&#xe67c;</i>选择文件</button>
-                  
-   <img   id="demo1"  style="width:30px;height:30px;padding-left: 200px;">
-</div>   
     <div class="layui-form-item lau-sign-other" style="margin-top: 20px;text-align:center">
         <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="register" style="margin-right: 100px">提交</button>
        
@@ -150,56 +72,15 @@
 <script src="/Sys/lib/layui/layui.js"></script>
 <script th:inline="javascript">
    $(function(){
-	   
-	  var imgpath;	  
+
 		var   url= 'registerTeaDeal'
-	   layui.use('upload', function(){
-		   var $ = layui.jquery
-		   ,upload = layui.upload;
-		   //普通图片上传
-		   var uploadInst = upload.render({
-		     elem: '#test1'
-		     ,url: 'uploadImg'
-		    ,field:"photo"  //默认是file
-		     ,before: function(obj){
-		       //预读本地文件示例，不支持ie8
-		       obj.preview(function(index, file, result){
-		         $('#demo1').attr('src', result); //图片链接（base64）
-		       });
-		     }
-		     ,done: function(res){
-		       //如果上传失败
-		       if(res.code > 0){
-		         return layer.msg('上传失败');
-		       }
-		      imgpath=res.data;
-		       
-		     }
-		     ,error: function(){
-		       //演示失败状态，并实现重传
-		       var demoText = $('#demoText');
-		       demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-		       demoText.find('.demo-reload').on('click', function(){
-		         uploadInst.upload();
-		       });
-		     }
-		   });
-   });
-	   
-		
-		
-		
 		 //全局定义一次, 加载formSelects
 	    layui.config({
 	        base: './js/' //此处路径请自行处理, 可以使用绝对路径
 	    }).extend({
 	        formSelects: 'formSelects-v4'
 	    });
-		 
-		
-		
-		
-	   
+
 	   layui.use(['jquery','form','formSelects'], function() {
 		   
            var formSelects = layui.formSelects;
@@ -208,7 +89,6 @@
            //监听提交
            form.on('submit(register)', function(data) {
                var loginjson=(data.field);
-               loginjson.photo=imgpath;
 				data=JSON.stringify(loginjson)
 				//alert(data);
 				$.ajax({
@@ -219,8 +99,10 @@
 	                 contentType : 'application/json',
 	                 success:function(data){
 	                	if(data=="success"){
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.location.reload();//刷新父页面，注意一定要在关闭当前iframe层之前执行刷新
+                            parent.layer.close(index); //再执行关闭
 	                		layer.msg("注册成功！",function(){
-	                            
 	                        });
 	                	}
 	                 },

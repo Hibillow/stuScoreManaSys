@@ -131,7 +131,16 @@ public class TeacherInfoDeal {
 		map.put("psw", SecureUtil.md5(map.get("psw").toString()));
 		teacherService.updateTea(map);
 		return "";
-
 	}
 
+	@RequestMapping("/deleteTea")
+	@ResponseBody
+	public String deleteTea(@RequestParam("num")  String num){
+		int count = teacherService.deleteTeacherByNum(num);
+		if(count == 1){
+			return "success";
+		}else {
+			return "failure";
+		}
+	}
 }

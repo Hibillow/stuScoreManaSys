@@ -64,31 +64,28 @@
 
 	<div class="layui-form-item">
 	<div class="layui-inline">
-        <label class="layui-form-label"><i class="iconfont layui-icon-extend-QQ"></i>QQ</label>
+        <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">专业</i></label>
         <div class="layui-input-block">
-            <input type="text" name="qq" placeholder="请输入QQ" autocomplete="off" class="layui-input">
+            <input type="text" name="speciality" placeholder="请输入专业" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">班级</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="scalss" placeholder="请输入班级" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">入学年份</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="grade" placeholder="请输入学年" autocomplete="off" class="layui-input">
+            </div>
         </div>
     </div>
 
-	<div class="layui-inline">
-        <label class="layui-form-label"><i class="iconfont layui-icon-extend-icon-test"></i>手机号</label>
-        <div class="layui-input-block">
-            <input type="text" name="phone" placeholder="请输入手机号" autocomplete="off" class="layui-input">
-        </div>
-    </div>
-    </div>
-
-	
-	
-
-  
-<div class="layui-upload" style="margin-top: 20px;text-align:center">
- 
-    
-    <button type="button" class="layui-btn layui-btn-primary"  id="test1"><i class="layui-icon">&#xe67c;</i>选择文件</button>
-                  
-   <img   id="demo1"  style="width:30px;height:30px;padding-left: 200px;">
-</div>   
+</div>
     <div class="layui-form-item lau-sign-other" style="margin-top: 20px;text-align:center">
         <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="register" style="margin-right: 100px">提交</button>
        
@@ -102,40 +99,6 @@
    $(function(){
 	  var imgpath;	  
 		var   url= 'registerStuDeal'
-	   layui.use('upload', function(){
-		   var $ = layui.jquery
-		   ,upload = layui.upload;
-		   //普通图片上传
-		   var uploadInst = upload.render({
-		     elem: '#test1'
-		     ,url: 'uploadImg'
-		    ,field:"photo"  //默认是file
-		     ,before: function(obj){
-		       //预读本地文件示例，不支持ie8
-		       obj.preview(function(index, file, result){
-		         $('#demo1').attr('src', result); //图片链接（base64）
-		       });
-		     }
-		     ,done: function(res){
-		       //如果上传失败
-		       if(res.code > 0){
-		         return layer.msg('上传失败');
-		       }
-		      imgpath=res.data;
-		       
-		     }
-		     ,error: function(){
-		       //演示失败状态，并实现重传
-		       var demoText = $('#demoText');
-		       demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-		       demoText.find('.demo-reload').on('click', function(){
-		         uploadInst.upload();
-		       });
-		     }
-		   });
-   });
-	   
-	   
 	   layui.use('form', function() {
            var form = layui.form;
           
@@ -143,7 +106,6 @@
            form.on('submit(register)', function(data) {
                var loginjson= JSON.stringify(data.field);
                var logindata=JSON.parse(loginjson);
-				logindata.photo=imgpath;
 				data=JSON.stringify(logindata)
 				$.ajax({
 	               	 url : url,
@@ -152,11 +114,13 @@
 	                 dateType:'json', 
 	                 contentType : 'application/json',
 	                 success:function(data){
-	                	if(data=="success"){
-	                		layer.msg("注册成功！",function(){
-	                            
-	                        });
-	                	}
+                         if(data=="success"){
+                             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                             parent.location.reload();//刷新父页面，注意一定要在关闭当前iframe层之前执行刷新
+                             parent.layer.close(index); //再执行关闭
+                             layer.msg("新增成功！",function(){
+                             });
+                         }
 	                 },
 	                 error:function(args){
 	                	 layer.msg("账号已经存在或者信息未填完整，注册失败！",function(){

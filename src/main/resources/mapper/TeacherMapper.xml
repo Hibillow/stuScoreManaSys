@@ -7,26 +7,20 @@
 	</select>
 
 	<select id="findAllTeacher" resultType="com.zhengyuan.liunao.entity.Teacher">
-			select teachno,name,gra_class
-		,c.coursename course,sex,phone,qq,photo
+		select teachno,name,sex
 		from teacher
-		inner join course c
-		on c.courseid=teacher.course
 		limit #{start},#{pagesize}
 		
 	</select>
 
 	<insert id="addTeacher">
-		insert into teacher(teachno,name,gra_class,course,psw,sex,phone,qq,photo)
-		values(#{teachno},#{name},#{gra_class},#{course},#{psw},#{sex},#{phone},#{qq},#{photo})
+		insert into teacher(teachno,name,psw,sex)
+		values(#{teachno},#{name},#{psw},#{sex})
 	</insert>
 
 	<select id="findTeacherByName" resultType="com.zhengyuan.liunao.entity.Teacher">
-			select teachno,name,gra_class
-		,c.coursename course,sex,phone,qq,photo
+		select teachno,name,sex
 		from teacher
-		inner join course c
-		on c.courseid=teacher.course
 		where name like CONCAT(CONCAT('%',#{0}),'%') limit #{1},#{2}
 	</select>
 
@@ -39,11 +33,8 @@
 
 
 	<select id="findTeacherByNum" resultType="com.zhengyuan.liunao.entity.Teacher">
-			select teachno,psw,name,gra_class
-		,c.coursename course,sex,phone,qq,photo
+		select teachno,psw,name,sex
 		from teacher
-		inner join course c
-		on c.courseid=teacher.course
 		where teachno =#{0} 
 	</select>
     
@@ -55,13 +46,12 @@
 			  <if test="name!=null">name=#{name},</if>
 			  <if test="psw!=null">psw=#{psw},</if>
 			  <if test="sex!=null">sex=#{sex},</if>
-			  <if test="gra_class!=null">gra_class=#{gra_class},</if>
-			  <if test="course!=null">course=#{course},</if>
-			  <if test="phone!=null">phone=#{phone},</if>
-			  <if test="qq!=null">qq=#{qq},</if>
-			   <if test="photo!=null">photo=#{photo},</if>
 		 </trim>
 		WHERE teachno in (select teachno from (select teachno from teacher where teachno = #{oldNum}) t1 )
 	</update>
+
+	<delete id="deleteTeacherByNum">
+		delete from teacher where teachno =#{0}
+	</delete>
 
 </mapper>
