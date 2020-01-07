@@ -35,7 +35,11 @@ public class ViewRoute {
 			return "redirect:/Sys/loginView";
 		}
 	}
-	
+
+	@RequestMapping("/classInfo")
+	public String clssInfo(){
+		return "classInfo";
+	}
 	@RequestMapping("/stuIndex")
 	public String stuIndex() {
 		return "stuIndex";
