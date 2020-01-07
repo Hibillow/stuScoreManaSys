@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50642
- Source Host           : 127.0.0.1:3306
+ Source Server Version : 50610
+ Source Host           : localhost:3306
  Source Schema         : myscoremanage
 
  Target Server Type    : MySQL
- Target Server Version : 50642
+ Target Server Version : 50610
  File Encoding         : 65001
 
- Date: 05/01/2020 22:50:40
+ Date: 07/01/2020 18:49:25
 */
 
 SET NAMES utf8mb4;
@@ -40,22 +40,30 @@ INSERT INTO `admin` VALUES (1, 'admin', 'admin', '21232f297a57a5a743894a0e4a801f
 DROP TABLE IF EXISTS `course`;
 CREATE TABLE `course`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `courseid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `coursename` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `course_no` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `course_hour` int(11) NULL DEFAULT 0,
+  `course_credit` int(1) NULL DEFAULT 0,
+  `courseYear` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `semester` int(11) NULL DEFAULT 0,
+  `type` int(11) NULL DEFAULT 0,
+  `teachNo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `courseid`(`courseid`) USING BTREE
+  INDEX `course_no`(`course_no`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
--- Records of course
+-- Table structure for sclass
 -- ----------------------------
-INSERT INTO `course` VALUES (1, 'c001', '高数');
-INSERT INTO `course` VALUES (2, 'c006', '数据结构');
-INSERT INTO `course` VALUES (3, 'c002', 'java');
-INSERT INTO `course` VALUES (4, 'c003', 'linux');
-INSERT INTO `course` VALUES (5, 'c004', 'javaweb');
-INSERT INTO `course` VALUES (6, 'c005', 'android');
-INSERT INTO `course` VALUES (7, 'c007', '数据库');
+DROP TABLE IF EXISTS `sclass`;
+CREATE TABLE `sclass`  (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `class_no` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `grade` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `speciality` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for speciality
@@ -102,8 +110,7 @@ CREATE TABLE `stu_sco`  (
   `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `stuno`(`stuno`) USING BTREE,
-  INDEX `fk_cou`(`courseid`) USING BTREE,
-  CONSTRAINT `fk_cou` FOREIGN KEY (`courseid`) REFERENCES `course` (`courseid`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  INDEX `fk_cou`(`courseid`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 645 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
