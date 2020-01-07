@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhengyuan.liunao.mapper.SClassMapper">
+
+    <select id="findAll" resultType="com.zhengyuan.liunao.entity.SClass">
+        select *
+        from sclass
+        <where>
+            <if test="classNo != null and classNo != ''">
+                and class_no like '%' #{classNo} '%'
+            </if>
+            <if test="name != null and name != ''">
+                and name like '%' #{name} '%'
+            </if>
+            <if test="grade != null and grade != ''">
+                and grade like '%' #{grade} '%'
+            </if>
+            <if test="speciality != null and speciality != ''">
+                and speciality like '%' #{speciality} '%'
+            </if>
+        </where>
+        order by class_no limit #{start},#{pagesize}
+    </select>
+
+    <select id="getCount" resultType="Integer">
+        select count(id) from sclass;
+    </select>
+
+    <insert id="addSClass">
+        insert into sclass(class_no,name,grade,speciality)values (#{classNo},#{name},#{grade},#{speciality})
+    </insert>
+
+    <update id="updateSClass">
+        update sclass
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name!=null">stuno=#{name},</if>
+            <if test="grade!=null">grade=#{grade},</if>
+            <if test="speciality!=null">speciality=#{speciality},</if>
+        </trim>
+        WHERE class_no = #{classNo}
+    </update>
+
+    <delete id="deleteSClass">
+        delete from sclass where class_no = #{classno}
+    </delete>
+</mapper>
