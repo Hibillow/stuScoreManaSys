@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zhengyuan.liunao.mapper.TeacherMapper">
-	<select id="findTeacher" resultType="com.zhengyuan.liunao.entity.Teacher">
+<mapper namespace="com.upms.mapper.TeacherMapper">
+	<select id="findTeacher" resultType="com.upms.entity.Teacher">
 		select * from teacher where teachno=#{0} and psw = #{1}
 	</select>
 
-	<select id="findAllTeacher" resultType="com.zhengyuan.liunao.entity.Teacher">
+	<select id="findAllTeacher" resultType="com.upms.entity.Teacher">
 		select teachno,name,sex
 		from teacher
 		limit #{start},#{pagesize}
@@ -18,7 +18,7 @@
 		values(#{teachno},#{name},#{psw},#{sex})
 	</insert>
 
-	<select id="findTeacherByName" resultType="com.zhengyuan.liunao.entity.Teacher">
+	<select id="findTeacherByName" resultType="com.upms.entity.Teacher">
 		select teachno,name,sex
 		from teacher
 		where name like CONCAT(CONCAT('%',#{0}),'%') limit #{1},#{2}
@@ -32,7 +32,7 @@
 	</select>
 
 
-	<select id="findTeacherByNum" resultType="com.zhengyuan.liunao.entity.Teacher">
+	<select id="findTeacherByNum" resultType="com.upms.entity.Teacher">
 		select teachno,psw,name,sex
 		from teacher
 		where teachno =#{0} 
