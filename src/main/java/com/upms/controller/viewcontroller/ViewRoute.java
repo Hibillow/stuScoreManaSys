@@ -159,6 +159,17 @@ public class ViewRoute {
 	public String announce() {
 		return "announce";
 	}
-	
-	
+
+	@RequestMapping("/specialityInfo")
+	public String specialityInfo(){
+		return "specialityInfo";
+	}
+	@RequestMapping("/specialityAdd")
+	public String specialityAdd(){
+		return "specialityAdd";
+	}
+	@RequestMapping("/specialityModi")
+	public String specialityModi(){
+		return "specialityModi";
+	}
 }

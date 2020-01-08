@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50610
- Source Host           : localhost:3306
+ Source Server Version : 50642
+ Source Host           : 127.0.0.1:3306
  Source Schema         : myscoremanage
 
  Target Server Type    : MySQL
- Target Server Version : 50610
+ Target Server Version : 50642
  File Encoding         : 65001
 
- Date: 07/01/2020 18:49:25
+ Date: 09/01/2020 01:32:39
 */
 
 SET NAMES utf8mb4;
@@ -70,11 +70,19 @@ CREATE TABLE `sclass`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `speciality`;
 CREATE TABLE `speciality`  (
-  `id` int(11) NOT NULL,
-  `speciality_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `speciality_no` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+  `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `speciality_no`(`speciality_no`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 267 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of speciality
+-- ----------------------------
+INSERT INTO `speciality` VALUES (264, '001', '软件工程');
+INSERT INTO `speciality` VALUES (265, '002', '计算机');
+INSERT INTO `speciality` VALUES (266, '22222', '');
 
 -- ----------------------------
 -- Table structure for stu

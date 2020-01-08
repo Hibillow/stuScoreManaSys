@@ -41,7 +41,7 @@
     <div class="layui-row">
 
         <div class="demoTable" style="margin-bottom: 20px">
-            搜索班级名：
+            搜索名称：
             <div class="layui-inline">
                 <input class="layui-input" name="id" id="demoReload" autocomplete="off">
             </div>
@@ -53,7 +53,7 @@
     </div>
 
     <xblock >
-        <button class="layui-btn" onclick="classAdd()"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" onclick="specialityAdd()"><i class="layui-icon"></i>添加</button>
     </xblock>
     <table id="test" lay-filter="test"></table>
 
@@ -61,25 +61,22 @@
 </body>
 
 <script type="text/html" id="barDemo">
-    <a title="修改信息 "   onclick="stuModi()" href="javascript:;">
+    <a title="修改信息 "   onclick="specialityModi()" href="javascript:;">
         <i class="layui-icon">&#xe642;</i>
     </a>
     <a title="删除"  onclick="deleteStu()" href="javascript:;" lay-event="edit">
         <i class="layui-icon">&#xe640;</i>
     </a>
 </script>
-
-
-
 <script >
     var documentWidth = $(document).width();
     layui.use('table', function(){
         var table = layui.table;
         table.render({
             elem: '#test'  //绑定table表格
-            ,id:'calssInfo'
+            ,id:'specialityInfo'
             ,method:'post'
-            ,url: '/Sys/SClass/getSClassInfo' //后台springmvc接收路径
+            ,url: '/Sys/SpecialityDeal/getSpecialityList' //后台springmvc接收路径
             ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
                 //,curr: 5 //设定初始在第 5 页
@@ -92,10 +89,8 @@
             ,cols: [
                 [
                     {type: 'checkbox',width:documentWidth*4/100}
-                    ,{field:'calssNo',title:'班级号', width:documentWidth*10/100, sort: true}
-                    ,{field:'name', title:'班级名', width:documentWidth*8/100}
-                    ,{field:'grade',title:'入学年份',width:documentWidth*8/100}
-                    ,{field:'speciality', title:'专业', width:documentWidth*10/100}
+                    ,{field:'specialityNo',title:'专业号', width:documentWidth*10/100, sort: true}
+                    ,{field:'name', title:'姓名', width:documentWidth*8/100}
                     ,{field:'operation',title:'操作',toolbar: '#barDemo'}
                 ]
             ]
@@ -105,14 +100,14 @@
         var $ = layui.$, active = {
             reload: function(){
                 var demoReload = $('#demoReload');
-                table.reload('calssInfo', {
+                table.reload('stuInfo', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     },
-                    url:'/Sys/SClass/getSClassInfo'
+                    url:'/Sys/SpecialityDeal/getSpecialityList'
                     ,where: {
                         key: {
-                            name: demoReload.val()
+                            id: demoReload.val()
                         }
                     }
                     ,method:'post'
@@ -127,45 +122,10 @@
 
     });
 
-
-
-
-    function delAll (argument) {
-        layui.use('table',function(){
-            var table = layui.table
-            var checkStatus = table.checkStatus('calssInfo');
-            if(checkStatus.data.length==0){
-                parent.layer.msg('请先选择要删除的数据行！', {icon: 2});
-                return ;
-            }
-            var nums = "";
-            for(var i=0;i<checkStatus.data.length;i++){
-                nums += checkStatus.data[i].stuno+",";
-            }
-
-            parent.layer.msg('删除中...', {icon: 16,shade: 0.3,time:5000});
-
-            $.ajax({
-                url:'deleteStus',
-                data:{'nums':nums},
-                type:'post',
-                success:function(data){
-                    if(data=="success"){
-                        parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
-                        location.reload(true);
-                    }else{
-                        parent.layer.msg('删除失败！', {icon: 2,time:3000,shade:0.2});
-                    }
-                }
-            });
-        });
-
-    }
-
     function deleteStu(){
         layui.use('table',function(){
             var table = layui.table
-            var checkStatus = table.checkStatus('calssInfo');
+            var checkStatus = table.checkStatus('stuInfo');
             var num = checkStatus.data[0].stuno;
             var name = checkStatus.data[0].name;
             layer.confirm('确认要删除'+name+'吗？', {
@@ -189,18 +149,18 @@
         });
     }
 
-    function classAdd(){
+    function specialityAdd(){
 
         layer.open(
             {
                 type: 2,
-                title: '增加班级',
+                title: '增加专业',
                 skin: 'layui-layer-lan',
                 shadeClose: false,
                 shade: 0.8,
                 area:  ['700px', '450px'],
                 resize:true,
-                content:'stuAdd',
+                content:'specialityAdd',
                 end: function(){
                     window.location.reload(); //刷新父页面
                 }
@@ -208,21 +168,28 @@
 
     }
 
-    function stuModi(){
+    function specialityModi(){
         var num="";
+        var name = "";
         layui.use('table',function(){
             var table = layui.table
-            var checkStatus = table.checkStatus('stuInfo');
-            num = checkStatus.data[0].stuno;
+            var checkStatus = table.checkStatus('specialityInfo');
+            num = checkStatus.data[0].specialityNo;
+            name = checkStatus.data[0].name;
         });
         layer.open({
             type: 2,
-            title: '编辑学生',
+            title: '编辑专业',
             skin: 'layui-layer-molv',
             shadeClose: false,
             shade: 0.8,
             area:  ['700px', '450px'],
-            content: 'stuModi?num='+num,
+            content: 'specialityModi',
+            success:function (layero,index) {
+                var iframe = window['layui-layer-iframe' + index];
+                iframe.num(num);
+                iframe.name(name);
+            },
             end: function(){
                 window.location.reload(); //刷新父页面
             }
