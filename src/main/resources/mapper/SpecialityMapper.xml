@@ -17,11 +17,14 @@
     <select id="querySpecialityList" resultType="java.util.HashMap">
         select
         speciality_no as "value",
-        name as "name"
+        name as "text"
         from speciality
     </select>
     <select id="getCount" resultType="Integer">
         select count(id) from speciality
+        <if test="_parameter != null and _parameter != ''">
+            where name like CONCAT(CONCAT('%',#{_parameter}),'%')
+        </if>
     </select>
 
     <update id="updateSpeciality">

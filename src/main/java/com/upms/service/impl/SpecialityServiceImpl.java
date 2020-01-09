@@ -37,11 +37,11 @@ public class SpecialityServiceImpl implements SpecialityService {
 
     @Override
     public int deleteSpeciality(String specialityNo) {
-        return deleteSpeciality(specialityNo);
+        return specialityMapper.deleteSpeciality(specialityNo);
     }
 
     @Override
-    public int getCount() {
-        return specialityMapper.getCount();
+    public int getCount(String name) {
+        return specialityMapper.getCount(name);
     }
 }

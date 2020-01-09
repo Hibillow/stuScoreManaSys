@@ -19,5 +19,5 @@ public interface SpecialityMapper {
 
     int deleteSpeciality(String specialityNo);
 
-    int getCount();
+    int getCount(String name);
 }

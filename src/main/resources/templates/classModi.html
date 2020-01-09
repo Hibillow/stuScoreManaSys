@@ -25,11 +25,26 @@
 <body class="layui-unselect lau-sign-body" style="padding-top: 0px">
 <form action="www.baidu.com" class="layui-form">
     <div class="layui-form-item" >
-
         <div class="layui-inline">
-            <label class="layui-form-label" ><i class="iconfont layui-icon-extend-bianhao" >专业名称</i></label>
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-ziyuan"></i>班级名称</label>
             <div class="layui-input-block">
-                <input type="text" name="name" id= "name" placeholder="请输入专业名称" autocomplete="off" class="layui-input" >
+                <input type="text" name="name" id="name" placeholder="请输入班级名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label" ><i class="iconfont layui-icon-extend-bianhao" id="grade" >入学年份</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="grade" placeholder="请输入入学年份" autocomplete="off" class="layui-input" id="grade">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item" >
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao"></i>专业</label>
+            <div class="layui-input-block">
+                <select id="speciality" name="speciality" lay-verify="required"  lay-filter="specialitys" class="select">
+                    <option value="" ></option>
+                </select>
             </div>
         </div>
     </div>
@@ -50,21 +65,38 @@
     function child(data) {
         json = data;
     }
+    $.ajax({
+        type:"POST",
+        url:'/Sys/SpecialityDeal/querySpecialityList',  //从数据库查询返回的是个list
+        dataType: "json",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        async: false,
+        cache: false,
+        success: function (data) {
+            $.each(data,function(index,item){
+                $('#speciality').append(new Option(item.text,item.value));//往下拉菜单里添加元素
+            })
+        }
+    });
     $(function(){
         var jsonObj = JSON.parse(json);
-        var num = jsonObj.specialityNo;
+        var num = jsonObj.classNo;
         var name = jsonObj.name;
+        var grade = jsonObj.grade;
+        var speciality = jsonObj.speciality;
         $('#name').val(name);
+        $('#grade').val(grade);
+        $('#speciality').val(speciality);
 
         layui.use('form', function() {
             var form = layui.form;
             //监听提交
             form.on('submit(update)', function(data) {
                 var updateJson= data.field;
-                updateJson.specialityNo = num;
+                updateJson.classNo = num;
                 data=JSON.stringify(updateJson)
                 $.ajax({
-                    url : '/Sys/SpecialityDeal/updateSpeciality',
+                    url : '/Sys/SClass/updateSClass',
                     data : data,
                     type:'POST',
                     contentType: 'application/json',

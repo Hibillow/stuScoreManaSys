@@ -39,7 +39,7 @@ public class SpecialityDeal {
         map.put("pagesize", lim);
         map.put("name", name);
         List<Speciality> specialityList = specialityService.getSpecialityList(map);
-        int total = specialityService.getCount();
+        int total = specialityService.getCount(name);
 
         Layui l = Layui.data(total, specialityList);
         return JSON.toJSON(l);

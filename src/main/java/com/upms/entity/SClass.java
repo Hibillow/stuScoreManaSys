@@ -4,17 +4,17 @@ package com.upms.entity;
  * @description 班级表
  */
 public class SClass {
-    private String calssNo;
+    private String classNo;
     private String name;
     private String grade;
     private String speciality;
 
-    public String getCalssNo() {
-        return calssNo;
+    public String getClassNo() {
+        return classNo;
     }
 
-    public void setCalssNo(String calssNo) {
-        this.calssNo = calssNo;
+    public void setClassNo(String classNo) {
+        this.classNo = classNo;
     }
 
     public String getName() {

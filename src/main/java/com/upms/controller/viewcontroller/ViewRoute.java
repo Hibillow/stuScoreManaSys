@@ -172,4 +172,13 @@ public class ViewRoute {
 	public String specialityModi(){
 		return "specialityModi";
 	}
+
+	@RequestMapping("/classAdd")
+	public String classAdd(){
+		return "classAdd";
+	}
+	@RequestMapping("/classModi")
+	public String classModi(){
+		return "classModi";
+	}
 }

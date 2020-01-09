@@ -43,7 +43,7 @@
         <div class="demoTable" style="margin-bottom: 20px">
             搜索名称：
             <div class="layui-inline">
-                <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+                <input class="layui-input" name="name" id="demoReload" autocomplete="off">
             </div>
             <button class="layui-btn" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
         </div>
@@ -64,7 +64,7 @@
     <a title="修改信息 "   onclick="specialityModi()" href="javascript:;">
         <i class="layui-icon">&#xe642;</i>
     </a>
-    <a title="删除"  onclick="deleteStu()" href="javascript:;" lay-event="edit">
+    <a title="删除"  onclick="deletespeciality()" href="javascript:;" lay-event="edit">
         <i class="layui-icon">&#xe640;</i>
     </a>
 </script>
@@ -100,15 +100,13 @@
         var $ = layui.$, active = {
             reload: function(){
                 var demoReload = $('#demoReload');
-                table.reload('stuInfo', {
+                table.reload('specialityInfo', {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     },
                     url:'/Sys/SpecialityDeal/getSpecialityList'
                     ,where: {
-                        key: {
-                            id: demoReload.val()
-                        }
+                        name: demoReload.val()
                     }
                     ,method:'post'
                 });
@@ -122,19 +120,19 @@
 
     });
 
-    function deleteStu(){
+    function deletespeciality(){
         layui.use('table',function(){
             var table = layui.table
-            var checkStatus = table.checkStatus('stuInfo');
-            var num = checkStatus.data[0].stuno;
+            var checkStatus = table.checkStatus('specialityInfo');
+            var num = checkStatus.data[0].specialityNo;
             var name = checkStatus.data[0].name;
             layer.confirm('确认要删除'+name+'吗？', {
                 btn : [ '确定', '取消' ]//按钮
             }, function(index) {
                 layer.close(index);
                 $.ajax({
-                    url:'deleteStu',
-                    data:{'num':num},
+                    url:'/Sys/SpecialityDeal/deleteSpeciality',
+                    data:{'specialityNo':num},
                     type:'post',
                     success:function(data){
                         if(data=="success"){
@@ -169,13 +167,11 @@
     }
 
     function specialityModi(){
-        var num="";
-        var name = "";
+        var json;
         layui.use('table',function(){
             var table = layui.table
             var checkStatus = table.checkStatus('specialityInfo');
-            num = checkStatus.data[0].specialityNo;
-            name = checkStatus.data[0].name;
+            json = JSON.stringify(checkStatus.data[0]);
         });
         layer.open({
             type: 2,
@@ -187,8 +183,7 @@
             content: 'specialityModi',
             success:function (layero,index) {
                 var iframe = window['layui-layer-iframe' + index];
-                iframe.num(num);
-                iframe.name(name);
+                iframe.child(json);
             },
             end: function(){
                 window.location.reload(); //刷新父页面
