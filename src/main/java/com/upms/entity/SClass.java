@@ -1,5 +1,7 @@
 package com.upms.entity;
 
+import javax.persistence.Transient;
+
 /**
  * @description 班级表
  */
@@ -8,6 +10,9 @@ public class SClass {
     private String name;
     private String grade;
     private String speciality;
+
+    @Transient
+    private String specialityName;
 
     public String getClassNo() {
         return classNo;
@@ -39,5 +44,13 @@ public class SClass {
 
     public void setSpeciality(String speciality) {
         this.speciality = speciality;
+    }
+
+    public String getSpecialityName() {
+        return specialityName;
+    }
+
+    public void setSpecialityName(String specialityName) {
+        this.specialityName = specialityName;
     }
 }

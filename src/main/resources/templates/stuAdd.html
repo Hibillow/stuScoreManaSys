@@ -63,16 +63,20 @@
     </div>
 
 	<div class="layui-form-item">
-	<div class="layui-inline">
-        <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">专业</i></label>
-        <div class="layui-input-block">
-            <input type="text" name="speciality" placeholder="请输入专业" autocomplete="off" class="layui-input">
-        </div>
-    </div>
         <div class="layui-inline">
-            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">班级</i></label>
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao"></i>专业</label>
             <div class="layui-input-block">
-                <input type="text" name="scalss" placeholder="请输入班级" autocomplete="off" class="layui-input">
+                <select id="speciality" name="speciality" lay-verify="required"  lay-filter="specialitys" class="select">
+                    <option value="" ></option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao"></i>班级</label>
+            <div class="layui-input-block">
+                <select id="sclass" name="sclass" lay-verify="required"  lay-filter="sclasss" class="select">
+                    <option value="" ></option>
+                </select>
             </div>
         </div>
     </div>
@@ -97,11 +101,47 @@
 <script src="/Sys/lib/layui/layui.js"></script>
 <script>
    $(function(){
-	  var imgpath;	  
+       $.ajax({
+           type:"POST",
+           url:'/Sys/SpecialityDeal/querySpecialityList',  //从数据库查询返回的是个list
+           dataType: "json",
+           contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+           async: false,
+           cache: false,
+           success: function (data) {
+               $.each(data,function(index,item){
+                   $('#speciality').append(new Option(item.text,item.value));//往下拉菜单里添加元素
+               })
+           }
+       });
+       //得到专业班级
+       function getClass(data){
+           var params={};
+           params.specialityNo = data.value;
+           console.log(params);
+           $.ajax({
+               type:"POST",
+               url:'/Sys/SClass/queryClassList',  //从数据库查询返回的是个list
+               dataType: "json",
+               async: false,
+               cache: false,
+               data : JSON.stringify(params),
+               contentType: "application/json",
+               success: function (data) {
+                   $("#sclass").empty();//清空下拉框的值
+                   $.each(data,function(index,item){
+                       $('#sclass').append(new Option(item.text,item.value));//往下拉菜单里添加元素
+                   });
+                   layui.form.render("select");//重新渲染 固定写法
+               }
+           });
+       }
 		var   url= 'registerStuDeal'
 	   layui.use('form', function() {
            var form = layui.form;
-          
+           form.on('select(specialitys)', function(data){
+               getClass(data);
+           });
            //监听提交
            form.on('submit(register)', function(data) {
                var loginjson= JSON.stringify(data.field);

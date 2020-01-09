@@ -38,4 +38,6 @@ public interface SClassMapper {
      * @return int
      */
     int deleteSClass(String calssNo);
+
+    List<Map<String, Object>> queryClassList(Map<String, Object> map);
 }

@@ -34,12 +34,13 @@ public class SClassInfoDeal {
      * @return java.lang.Object
      */
     @RequestMapping(value = "/SClass/getSClassInfo")
-    public Object getSClassInfo(@RequestParam("limit") String limit, @RequestParam("page") String page){
+    public Object getSClassInfo(@RequestParam("limit") String limit, @RequestParam("page") String page, String name){
         int lim = Integer.parseInt(limit);
         int start = (Integer.parseInt(page) - 1) * lim;
         Map<String, Object> map = new HashMap<>();
         map.put("start", start);
         map.put("pagesize", lim);
+        map.put("name", name);
         List<SClass> sClassList = sclassService.findAll(map);
         int total = sclassService.getCount();
         Layui layui = Layui.data(total,sClassList);
@@ -71,5 +72,10 @@ public class SClassInfoDeal {
         }else{
             return "failure";
         }
+    }
+
+    @RequestMapping("/SClass/queryClassList")
+    public List<Map<String, Object>> queryClassList(@RequestBody Map map){
+        return  sclassService.queryClassList(map);
     }
 }

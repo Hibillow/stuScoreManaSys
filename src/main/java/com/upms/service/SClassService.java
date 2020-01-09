@@ -15,4 +15,6 @@ public interface SClassService {
     int updateSClass(Map<String, Object> map);
 
     int deletaSClass(String calssNo);
+
+    List<Map<String, Object>> queryClassList(Map<String, Object> map);
 }

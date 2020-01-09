@@ -39,4 +39,9 @@ public class SClassServiceImpl implements SClassService {
     public int deletaSClass(String classNo) {
         return deletaSClass(classNo);
     }
+
+    @Override
+    public List<Map<String, Object>> queryClassList(Map<String, Object> map) {
+        return sClassMapper.queryClassList(map);
+    }
 }
