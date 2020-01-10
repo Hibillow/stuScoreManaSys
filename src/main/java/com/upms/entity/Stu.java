@@ -1,15 +1,20 @@
 package com.upms.entity;
 
+import javax.persistence.Transient;
+
 public class Stu {
 	private String stuno;
 	private String name;
 	private String psw;
 	private String sex;
 	private String grade;
-	private String scalss;
+	private String sclass;
 	private String speciality;
 
-
+	@Transient
+	private String sclassName;
+	@Transient
+	private String specialityName;
 
 	public Stu() {
 		super();
@@ -61,12 +66,12 @@ public class Stu {
 		this.grade = grade;
 	}
 
-	public String getScalss() {
-		return scalss;
+	public String getSclass() {
+		return sclass;
 	}
 
-	public void setScalss(String scalss) {
-		this.scalss = scalss;
+	public void setSclass(String sclass) {
+		this.sclass = sclass;
 	}
 
 	public String getSpeciality() {
@@ -81,6 +86,20 @@ public class Stu {
 	public String toString() {
 		return "Stu [stuno=" + stuno + ", name=" + name + ", psw=" + psw + ", sex=" + sex + "]";
 	}
-	
-	
+
+	public String getSclassName() {
+		return sclassName;
+	}
+
+	public void setSclassName(String sclassName) {
+		this.sclassName = sclassName;
+	}
+
+	public String getSpecialityName() {
+		return specialityName;
+	}
+
+	public void setSpecialityName(String specialityName) {
+		this.specialityName = specialityName;
+	}
 }

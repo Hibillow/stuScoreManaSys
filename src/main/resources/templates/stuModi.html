@@ -29,7 +29,7 @@
      <div class="layui-inline">
         <label class="layui-form-label" ><i class="iconfont layui-icon-extend-bianhao" >学号</i></label>
         <div class="layui-input-block">
-            <input type="text" name="stuno" id= "stuNo" placeholder="请输入学号" autocomplete="off" class="layui-input" >
+            <input type="text" name="stuno" id= "stuNo" placeholder="请输入学号" autocomplete="off" class="layui-input"  readonly="readonly" >
         </div>
         </div>
         
@@ -42,9 +42,6 @@
         </div>
     </div>
 
-  
-  
-  	
     <div class="layui-form-item">
     
     
@@ -62,25 +59,28 @@
             <input type="password" name="psw" id="psw" placeholder="请输入密码" autocomplete="off" class="layui-input">
         </div>
      </div>
-     
-     
-     
+
     </div>
 
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">专业</i></label>
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao"></i>专业</label>
             <div class="layui-input-block">
-                <input type="text" name="speciality" id="speciality" placeholder="请输入专业" autocomplete="off" class="layui-input">
+                <select id="speciality" name="speciality" lay-verify="required"  lay-filter="specialitys" class="select">
+                    <option value="" ></option>
+                </select>
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">班级</i></label>
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao"></i>班级</label>
             <div class="layui-input-block">
-                <input type="text" name="scalss" id="sClass" placeholder="请输入班级" autocomplete="off" class="layui-input">
+                <select id="sclass" name="sclass" lay-verify="required"  lay-filter="sclasss" class="select">
+                    <option value="" ></option>
+                </select>
             </div>
         </div>
     </div>
+
     <div class="layui-form-item">
         <div class="layui-inline">
             <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">入学年份</i></label>
@@ -102,69 +102,71 @@
 </body>
 <script src="/Sys/lib/layui/layui.js"></script>
 <script  th:inline="javascript">
+    var speciality = "";
+    var sclass = "";
+    function child(data) {
+        var jsonObj = JSON.parse(data);
+        var num = jsonObj.stuno;
+        var name = jsonObj.name;
+        var sex = jsonObj.sex;
+        var psw = jsonObj.psw;
+        speciality = jsonObj.speciality;
+        sclass = jsonObj.sclass;
+        var grade = jsonObj.grade;
+        $('#name').val(name);
+        $('#stuNo').val(num);
+        $('#psw').val(psw);
+        $('#grade').val(grade);
+        $("input[name=sex][value='" + sex + "']").attr("checked", true);
+    }
+    console.log(speciality);
+    //得到专业班级
+    function getClass(data){
+        var params={};
+        params.specialityNo = data.value;
+        $.ajax({
+            type:"POST",
+            url:'/Sys/SClass/queryClassList',  //从数据库查询返回的是个list
+            dataType: "json",
+            async: false,
+            cache: false,
+            data : JSON.stringify(params),
+            contentType: "application/json",
+            success: function (data) {
+                $("#sclass").empty();//清空下拉框的值
+                $.each(data,function(index,item){
+                    $('#sclass').append(new Option(item.text,item.value));//往下拉菜单里添加元素
+                });
+                $('#sclass').val(sclass);
+                layui.form.render("select");//重新渲染 固定写法
+            }
+        });
+    }
+
    $(function(){
-	  var num= [[${num}]];
-	  $.ajax({
-		  url:'getStuByNum',
-		  type:'POST',
-		  data:{'num':num},
-	  	  success:function(data){
-	  		
-	  		var datajson = JSON.parse(data)
-	  		//alert(JSON.stringify(datajson.data[0].num))
-	  		$("#stuNo").val(datajson.data[0].stuno)
-	  		$('#name').val(datajson.data[0].name)
-	  		$('#psw').val(datajson.data[0].psw)
-	  		$('#repsw').val(datajson.data[0].psw)
-	  		$("input[name=sex][value='男']").attr("checked", datajson.data[0].sex == '男' ? true : false);
-          $("input[name=sex][value='女']").attr("checked",  datajson.data[0].sex == '女' ? true : false);
-	  		$('#grade').val(datajson.data[0].grade)
-	  		$('#sClass').val(datajson.data[0].scalss)
-	  		$('#speciality').val(datajson.data[0].speciality)
-	  	  }
-	  });
-	  var imgpath;
-	   layui.use('upload', function(){
-		   var $ = layui.jquery
-		   ,upload = layui.upload;
-		   
-		   var uploadInst = upload.render({
-		     elem: '#test1'
-		     ,url: 'uploadImg'
-		    ,field:"photo"  //默认是file
-		     ,before: function(obj){
-		       //预读本地文件示例，不支持ie8
-		       obj.preview(function(index, file, result){
-		         $('#demo1').attr('src', result); //图片链接（base64）
-		       });
-		     }
-		     ,done: function(res){
-		       //如果上传失败
-		       if(res.code > 0){
-		         return layer.msg('上传失败');
-		       }
-		      imgpath=res.data;
-		       
-		     }
-		     ,error: function(){
-		       //演示失败状态，并实现重传
-		       var demoText = $('#demoText');
-		       demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-		       demoText.find('.demo-reload').on('click', function(){
-		         uploadInst.upload();
-		       });
-		     }
-		   });
-   });
-	   
-	   
 	   layui.use('form', function() {
            var form = layui.form;
+           $.ajax({
+               type:"POST",
+               url:'/Sys/SpecialityDeal/querySpecialityList',  //从数据库查询返回的是个list
+               dataType: "json",
+               contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+               async: false,
+               cache: false,
+               success: function (data) {
+                   $.each(data,function(index,item){
+                       $('#speciality').append(new Option(item.text,item.value));//往下拉菜单里添加元素
+                   })
+                   form.render("select");
+                   $('#speciality').val(speciality);
+               }
+           });
+           form.on('select(specialitys)', function(data){
+               getClass(data);
+           });
            //监听提交
            form.on('submit(updateStu)', function(data) {
                var updateJson= data.field;
-                updateJson.oldNum = num;
-				updateJson.photo=imgpath;
 				data=JSON.stringify(updateJson)
 				$.ajax({
 	               	 url : 'updateStu',

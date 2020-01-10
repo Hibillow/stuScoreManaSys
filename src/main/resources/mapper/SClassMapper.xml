@@ -4,6 +4,10 @@
 <mapper namespace="com.upms.mapper.SClassMapper">
 
     <resultMap id="classs" type="com.upms.entity.SClass">
+        <result column="class_no" property="classNo"/>
+        <result column="name" property="name"/>
+        <result column="grade" property="grade"/>
+        <result column="speciality" property="speciality"/>
         <association property="specialityName" javaType="java.lang.String">
             <result column="name" property="name"/>
         </association>

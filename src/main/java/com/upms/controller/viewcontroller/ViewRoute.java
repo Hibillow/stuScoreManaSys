@@ -77,10 +77,8 @@ public class ViewRoute {
 	}
 
 	@RequestMapping("/stuModi")
-	public ModelAndView stuModi(ModelAndView mav, @RequestParam("num") String num) {
-		mav.addObject("num", num);
-		mav.setViewName("stuModi");
-		return mav;
+	public String stuModi() {
+		return "stuModi";
 	}
 	
 	

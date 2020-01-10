@@ -8,13 +8,31 @@
 
     
      <insert id="addStu" >
-        insert into stu(stuno,name,psw,sex,grade,scalss,speciality)values (#{stuno},#{name},#{psw},#{sex},#{grade},#{scalss},#{speciality})
+        insert into stu(stuno,name,psw,sex,grade,sclass,speciality)values (#{stuno},#{name},#{psw},#{sex},#{grade},#{sclass},#{speciality})
     </insert>
-    
 
+
+	<resultMap id="classs" type="com.upms.entity.Stu">
+		<result column="stuno" property="stuno"/>
+		<result column="name" property="name"/>
+		<result column="grade" property="grade"/>
+		<result column="psw" property="psw"/>
+		<result column="sex" property="sex"/>
+		<result column="sclass" property="sclass"/>
+		<result column="speciality" property="speciality"/>
+		<association property="specialityName" javaType="java.lang.String">
+			<result column="name" property="name"/>
+		</association>
+		<association property="sclassName" javaType="java.lang.String">
+			<result column="name" property="name"/>
+		</association>
+	</resultMap>
 
 	 <select id="findAllStu" resultType="com.upms.entity.Stu">
-      select * from    Stu   order by stuno limit #{start},#{pagesize}
+      select s.*,c.name as sclassName,sp.name as specialityName
+      from stu s,sclass c,speciality sp
+      where s.speciality = sp.speciality_no and s.sclass = c.class_no
+      order by stuno limit #{start},#{pagesize}
     </select>
     
     
@@ -61,7 +79,7 @@
 			  <if test="psw!=null">psw=#{psw},</if>
 			  <if test="sex!=null">sex=#{sex},</if>
 			  <if test="grade!=null">grade=#{grade},</if>
-			  <if test="scalss!=null">scalss=#{scalss},</if>
+			  <if test="sclass!=null">scalss=#{sclass},</if>
 			   <if test="speciality!=null">speciality=#{speciality},</if>
 		 </trim>
 		WHERE id in (select id from (select id from stu where stuno = #{oldNum}) t1 )

@@ -47,9 +47,6 @@
             </div>
             <button class="layui-btn" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
         </div>
-
-
-
     </div>
 
     <xblock >
@@ -95,7 +92,7 @@
                     ,{field:'classNo',title:'班级号', width:documentWidth*10/100, sort: true}
                     ,{field:'name', title:'班级名', width:documentWidth*8/100}
                     ,{field:'grade',title:'入学年份',width:documentWidth*8/100}
-                    ,{field:'speciality', title:'专业', width:documentWidth*10/100}
+                    ,{field:'specialityName', title:'专业', width:documentWidth*10/100}
                     ,{field:'operation',title:'操作',toolbar: '#barDemo'}
                 ]
             ]
@@ -185,7 +182,7 @@
             shadeClose: false,
             shade: 0.8,
             area:  ['700px', '450px'],
-            content: 'classModi?num='+num,
+            content: 'classModi',
             success:function (layero,index) {
                 var iframe = window['layui-layer-iframe' + index];
                 iframe.child(json);
