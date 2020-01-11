@@ -54,4 +54,11 @@
 		delete from teacher where teachno =#{0}
 	</delete>
 
+	<select id="queryTeacherList" resultType="java.util.HashMap">
+        select
+        teachno as "value",
+        name as "text"
+        from teacher
+    </select>
+
 </mapper>

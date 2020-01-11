@@ -102,26 +102,9 @@
 </body>
 <script src="/Sys/lib/layui/layui.js"></script>
 <script  th:inline="javascript">
-    var speciality = "";
-    var sclass = "";
-    function child(data) {
-        var jsonObj = JSON.parse(data);
-        var num = jsonObj.stuno;
-        var name = jsonObj.name;
-        var sex = jsonObj.sex;
-        var psw = jsonObj.psw;
-        speciality = jsonObj.speciality;
-        sclass = jsonObj.sclass;
-        var grade = jsonObj.grade;
-        $('#name').val(name);
-        $('#stuNo').val(num);
-        $('#psw').val(psw);
-        $('#grade').val(grade);
-        $("input[name=sex][value='" + sex + "']").attr("checked", true);
-    }
-    console.log(speciality);
     //得到专业班级
-    function getClass(data){
+    function getClass(data,sclass){
+        console.log(sclass);
         var params={};
         params.specialityNo = data.value;
         $.ajax({
@@ -135,15 +118,34 @@
             success: function (data) {
                 $("#sclass").empty();//清空下拉框的值
                 $.each(data,function(index,item){
-                    $('#sclass').append(new Option(item.text,item.value));//往下拉菜单里添加元素
+                    option = new Option(item.text,item.value)
+                    if(item.value == sclass) {
+                        option.setAttribute("selected",'true');
+                    }
+                    $('#sclass').append(option);//往下拉菜单里添加元素
                 });
-                $('#sclass').val(sclass);
                 layui.form.render("select");//重新渲染 固定写法
             }
         });
     }
 
    $(function(){
+       var stuJson = parent.stuJson;
+       var jsonObj = JSON.parse(stuJson);
+       var num = jsonObj.stuno;
+       var name = jsonObj.name;
+       var sex = jsonObj.sex;
+       var psw = jsonObj.psw;
+       var speciality = jsonObj.speciality;
+       var sclass = jsonObj.sclass;
+       var grade = jsonObj.grade;
+
+       $('#name').val(name);
+       $('#stuNo').val(num);
+       $('#psw').val(psw);
+       $('#grade').val(grade);
+       $("input[name=sex][value='" + sex + "']").attr("checked", true);
+
 	   layui.use('form', function() {
            var form = layui.form;
            $.ajax({
@@ -155,14 +157,22 @@
                cache: false,
                success: function (data) {
                    $.each(data,function(index,item){
-                       $('#speciality').append(new Option(item.text,item.value));//往下拉菜单里添加元素
+                       option = new Option(item.text,item.value)
+                       if(item.value == speciality) {
+                           option.setAttribute("selected",'true');
+                       }
+                       $('#speciality').append(option);//往下拉菜单里添加元素
                    })
                    form.render("select");
-                   $('#speciality').val(speciality);
                }
            });
+           //给班级赋值
+           var specialityData = {};
+           specialityData.value = speciality;
+           getClass(specialityData,sclass);
+
            form.on('select(specialitys)', function(data){
-               getClass(data);
+               getClass(data,sclass);
            });
            //监听提交
            form.on('submit(updateStu)', function(data) {
@@ -186,7 +196,6 @@
 	                     });
 	                 }
 	               	});
-              		
            });
        });   
    });

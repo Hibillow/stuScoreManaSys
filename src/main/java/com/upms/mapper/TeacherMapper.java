@@ -22,4 +22,6 @@ public interface TeacherMapper {
 	public int updateTea(Map map);
 
 	int deleteTeacherByNum(String num);
+
+	List<Map<String, Object>> queryTeacherList();
 }

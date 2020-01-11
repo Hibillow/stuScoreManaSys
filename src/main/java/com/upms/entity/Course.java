@@ -127,4 +127,5 @@ public class Course {
     public void setOtherPercent(float otherPercent) {
         this.otherPercent = otherPercent;
     }
+
 }

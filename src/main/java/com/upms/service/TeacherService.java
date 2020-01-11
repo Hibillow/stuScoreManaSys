@@ -18,4 +18,6 @@ public interface TeacherService {
 	public int updateTea(Map map);
 
 	int deleteTeacherByNum(String num);
+
+	List<Map<String, Object>> queryTeacherList();
 }

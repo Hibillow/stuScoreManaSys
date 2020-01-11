@@ -1,6 +1,6 @@
 package com.upms.mapper;
 
-import com.upms.entity.SClass;
+import com.upms.entity.Course;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -17,14 +17,14 @@ public interface CourseMapper {
      * @param map
      * @return java.util.List<SClass>
      */
-    List<SClass> findAll(Map<String, Object> map);
+    List<Course> findAll(Map<String, Object> map);
 
     /**
      * 查询总条数
      * @param
      * @return int
      */
-    int getCount();
+    int getCount(Map<String, Object> map);
 
     int addCourse(Map<String, Object> map);
 
@@ -37,10 +37,10 @@ public interface CourseMapper {
 
     /**
      * 删除班级
-     * @param courseNo
+     * @param courseNos
      * @return int
      */
-    int deleteCourse(String courseNo);
+    int deleteCourse(String courseNos);
 
     /**
      * 设置课程成绩权重

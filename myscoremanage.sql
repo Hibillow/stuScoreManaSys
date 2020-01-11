@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50642
- Source Host           : 127.0.0.1:3306
+ Source Server Version : 50610
+ Source Host           : localhost:3306
  Source Schema         : myscoremanage
 
  Target Server Type    : MySQL
- Target Server Version : 50642
+ Target Server Version : 50610
  File Encoding         : 65001
 
- Date: 09/01/2020 01:32:39
+ Date: 11/01/2020 18:11:46
 */
 
 SET NAMES utf8mb4;
@@ -44,13 +44,13 @@ CREATE TABLE `course`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `course_hour` int(11) NULL DEFAULT 0,
   `course_credit` int(1) NULL DEFAULT 0,
-  `courseYear` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `course_year` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `semester` int(11) NULL DEFAULT 0,
   `type` int(11) NULL DEFAULT 0,
-  `teachNo` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0',
+  `teach_no` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `course_no`(`course_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for sclass
@@ -63,7 +63,13 @@ CREATE TABLE `sclass`  (
   `grade` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `speciality` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of sclass
+-- ----------------------------
+INSERT INTO `sclass` VALUES (2, '2017001', '发范德萨', '2017', '002');
+INSERT INTO `sclass` VALUES (3, '2019001', '计算机2班', '2019', '002');
 
 -- ----------------------------
 -- Table structure for speciality
@@ -75,14 +81,14 @@ CREATE TABLE `speciality`  (
   `name` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `speciality_no`(`speciality_no`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 267 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 268 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of speciality
 -- ----------------------------
-INSERT INTO `speciality` VALUES (264, '001', '软件工程');
+INSERT INTO `speciality` VALUES (264, '001', '软件工程111');
 INSERT INTO `speciality` VALUES (265, '002', '计算机');
-INSERT INTO `speciality` VALUES (266, '22222', '');
+INSERT INTO `speciality` VALUES (267, NULL, '哈哈哈');
 
 -- ----------------------------
 -- Table structure for stu
@@ -95,16 +101,17 @@ CREATE TABLE `stu`  (
   `psw` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `sex` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `grade` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `scalss` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `sclass` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `speciality` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `stuno`(`stuno`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 264 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 266 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of stu
 -- ----------------------------
-INSERT INTO `stu` VALUES (263, '20170101', '李四', 'e10adc3949ba59abbe56e057f20f883e', '女', '2017', '网络工程1班', '网络工程');
+INSERT INTO `stu` VALUES (264, '20180201', '张三', 'e10adc3949ba59abbe56e057f20f883e', '男', '2018', NULL, '002');
+INSERT INTO `stu` VALUES (265, '20190201', '小红', '14e1b600b1fd579f47433b88e8d85291', '女', '2019', '2019001', '002');
 
 -- ----------------------------
 -- Table structure for stu_sco

@@ -63,5 +63,10 @@ public class TeacherServiceImpl implements TeacherService {
 		return teacherMapper.deleteTeacherByNum(num);
 	}
 
+	@Override
+	public List<Map<String, Object>> queryTeacherList() {
+		return teacherMapper.queryTeacherList();
+	}
+
 
 }

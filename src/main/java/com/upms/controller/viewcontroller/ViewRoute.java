@@ -179,4 +179,21 @@ public class ViewRoute {
 	public String classModi(){
 		return "classModi";
 	}
+	//-------------------管理员页面-课程信息
+	@RequestMapping("/courseInfo")
+	public String courseInfo(){
+		return "courseInfo";
+	}
+	@RequestMapping("/courseAdd")
+	public String courseAdd(){
+		return "courseAdd";
+	}
+	@RequestMapping("/courseModi")
+	public String courseModi(){
+		return  "courseModi";
+	}
+	@RequestMapping("/coursePercent")
+	public String coursePercent(){
+		return  "coursePercent";
+	}
 }

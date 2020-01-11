@@ -225,6 +225,7 @@
 		  var checkStatus = table.checkStatus('stuInfo');
           json = JSON.stringify(checkStatus.data[0]);
 	  });
+      window.stuJson = json;
 	  layer.open({
 		  type: 2,
           title: '编辑学生',
@@ -233,10 +234,6 @@
           shade: 0.8,
           area:  ['700px', '450px'],
           content: 'stuModi',
-          success:function (layero,index) {
-              var iframe = window['layui-layer-iframe' + index];
-              iframe.child(json);
-          },
           end: function(){
           	window.location.reload(); //刷新父页面
           }

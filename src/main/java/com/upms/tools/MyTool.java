@@ -4,10 +4,48 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
 public class MyTool {
+
+	public static String getNewEquipmentNo(String equipmentType, String equipmentNo){
+		String newEquipmentNo = "00001";
+
+		if(equipmentNo != null && !equipmentNo.isEmpty()){
+			int newEquipment = Integer.parseInt(equipmentNo) + 1;
+			newEquipmentNo = String.format(equipmentType + "%05d", newEquipment);
+		}
+		return newEquipmentNo;
+	}
+
+
+	public static String list2SqlStr(Collection<String> aa){
+		if (aa == null) {
+			return null;
+		} else {
+			StringBuffer tt = new StringBuffer();
+			Iterator var2 = aa.iterator();
+
+			while(var2.hasNext()) {
+				String str = (String)var2.next();
+				if (tt.length() > 0) {
+					tt.append(",'");
+				} else {
+					tt.append("'");
+				}
+
+				tt.append(str);
+				tt.append("'");
+			}
+
+			return tt.toString().equals("") ? null : tt.toString();
+		}
+	}
+
 	public static String SaveImg(MultipartFile file, String dir, String imgName) {
 		File direction = new File(dir);
 		if (!direction.exists()) {

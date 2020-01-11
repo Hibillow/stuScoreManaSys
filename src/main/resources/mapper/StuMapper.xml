@@ -74,15 +74,14 @@
 	<update id="updateStu">	
 		update stu 
 		 <trim prefix="set" suffixOverrides=",">
-			  <if test="stuno!=null">stuno=#{stuno},</if>
 			  <if test="name!=null">name=#{name},</if>
 			  <if test="psw!=null">psw=#{psw},</if>
 			  <if test="sex!=null">sex=#{sex},</if>
 			  <if test="grade!=null">grade=#{grade},</if>
-			  <if test="sclass!=null">scalss=#{sclass},</if>
+			  <if test="sclass!=null">sclass=#{sclass},</if>
 			   <if test="speciality!=null">speciality=#{speciality},</if>
 		 </trim>
-		WHERE id in (select id from (select id from stu where stuno = #{oldNum}) t1 )
+		WHERE stuno = #{stuno}
 	</update>
 	
 	<select id = "getScoreByStuName" resultType="com.upms.entity.Scores">

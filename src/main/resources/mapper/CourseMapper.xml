@@ -1,47 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.upms.entity.Course">
+<mapper namespace="com.upms.mapper.CourseMapper">
     <select id="findAll" resultType="com.upms.entity.Course">
-        select *
-        from course
+        select c.*,t.name as teachName
+        from course c, teacher t
         <where>
-            <if test="classNo != null and classNo != ''">
-                and class_no like '%' #{classNo} '%'
+            <if test="courseNo != null and courseNo != ''">
+                and course_no like '%' #{courseNo} '%'
             </if>
             <if test="name != null and name != ''">
                 and name like '%' #{name} '%'
             </if>
-            <if test="grade != null and grade != ''">
-                and grade like '%' #{grade} '%'
+            <if test="courseYear != null and courseYear != ''">
+                and course_year like '%' #{courseYear} '%'
             </if>
             <if test="speciality != null and speciality != ''">
-                and speciality like '%' #{speciality} '%'
+                and teach_no like '%' #{teachNo} '%'
             </if>
         </where>
-        order by class_no limit #{start},#{pagesize}
+        order by course_no limit #{start},#{pagesize}
     </select>
 
     <select id="getCount" resultType="Integer">
-        select count(id) from course;
+        select count(id) from course
+        <where>
+            <if test="courseNo != null and courseNo != ''">
+                and course_no like '%' #{courseNo} '%'
+            </if>
+            <if test="name != null and name != ''">
+                and name like '%' #{name} '%'
+            </if>
+            <if test="courseYear != null and courseYear != ''">
+                and course_year like '%' #{courseYear} '%'
+            </if>
+            <if test="speciality != null and speciality != ''">
+                and teach_no like '%' #{teachNo} '%'
+            </if>
+        </where>;
     </select>
 
     <insert id="addCourse">
-        insert into course(class_no,name,grade,speciality)values (#{classNo},#{name},#{grade},#{speciality})
+        insert
+        into course(course_no,name,course_hour,course_credit,course_year,semester,type,teach_no)
+        values (#{courseNo},#{name},#{courseHour},#{courseCredit},#{courseYear},#{semester},#{type},#{teachNo})
     </insert>
 
     <update id="updateCourse">
         update course
         <trim prefix="set" suffixOverrides=",">
-            <if test="name!=null">stuno=#{name},</if>
-            <if test="course_hour!=null">grade=#{grade},</if>
-            <if test="speciality!=null">speciality=#{speciality},</if>
+            <if test="name!=null">name=#{name},</if>
+            <if test="courseHour!=null">course_hour=#{courseHour},</if>
+            <if test="courseCredit!=null">course_credit=#{courseCredit},</if>
+            <if test="courseYear!=null">course_year=#{courseYear},</if>
+            <if test="semester!=null">semester=#{semester},</if>
+            <if test="type!=null">type=#{type},</if>
+            <if test="teachNo!=null">teach_no=#{teachNo},</if>
         </trim>
-        WHERE class_no = #{classNo}
+        WHERE course_no = #{courseNo}
     </update>
 
     <delete id="deleteCourse">
-        delete from course where course_no = #{courseNo}
+        delete from course where course_no in(#{courseNos})
     </delete>
     
     <update id="updateCoursePercent">

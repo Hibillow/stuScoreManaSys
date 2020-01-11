@@ -1,13 +1,17 @@
 package com.upms.service.impl;
 
+import com.upms.entity.Course;
 import com.upms.entity.SClass;
 import com.upms.mapper.CourseMapper;
 import com.upms.service.CourseService;
+import com.upms.tools.MyTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -16,27 +20,36 @@ public class CourseServiceImpl implements CourseService {
     CourseMapper courseMapper;
 
     @Override
-    public List<SClass> findAll(Map<String, Object> map) {
-        return null;
+    public List<Course> findAll(Map<String, Object> map) {
+        return courseMapper.findAll(map);
     }
 
     @Override
-    public int getCount() {
-        return 0;
+    public int getCount(Map<String, Object> map) {
+        return courseMapper.getCount(map);
     }
 
     @Override
     public int addCourse(Map<String, Object> map) {
-        return 0;
+        String courseNo = UUID.randomUUID().toString().replaceAll("-","");
+        map.put("courseNo",courseNo);
+        return courseMapper.addCourse(map);
     }
 
     @Override
     public int updateCourse(Map<String, Object> map) {
-        return 0;
+        return courseMapper.updateCourse(map);
     }
 
     @Override
     public int deletaCourse(String courseNo) {
-        return 0;
+        List<String> courseNoList = Arrays.asList(courseNo.split(","));
+        String courseNos = MyTool.list2SqlStr(courseNoList);
+        return courseMapper.deleteCourse(courseNos);
+    }
+
+    @Override
+    public int updateCoursePercent(Map<String, Object> map) {
+        return courseMapper.updateCoursePercent(map);
     }
 }

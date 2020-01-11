@@ -142,4 +142,10 @@ public class TeacherInfoDeal {
 			return "failure";
 		}
 	}
+
+	@RequestMapping("/queryTeacherList")
+	@ResponseBody
+	public Object queryTeacherList(){
+		return teacherService.queryTeacherList();
+	}
 }

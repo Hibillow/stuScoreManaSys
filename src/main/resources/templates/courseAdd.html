@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册LAU</title>
+
+
+
+    <link rel="stylesheet" href="/Sys/css/layui.css">
+    <link rel="stylesheet" href="/Sys/css/sign.css">
+
+    <link rel="stylesheet" href="/Sys/js/css/modules/layui-icon-extend/iconfont.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/Sys/css/font.css">
+    <link rel="stylesheet" href="/Sys/css/xadmin.css">
+
+
+    <script type="text/javascript"
+            src="/Sys/js/jquery-3.3.1.min.js"></script>
+    <script src="/Sys/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+
+
+</head>
+<body class="layui-unselect lau-sign-body" style="padding-top: 0px " >
+
+<form action="" class="layui-form">
+
+    <div class="layui-form-item" >
+        <div class="layui-inline">
+            <label class="layui-form-label" ><i class="iconfont layui-icon-extend-bianhao" id="" >课程号</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="courseNo" placeholder="请输入课程号" autocomplete="off" class="layui-input" id="courseNo">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-ziyuan"></i>课程名</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" placeholder="请输入课程名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item" >
+        <div class="layui-inline">
+            <label class="layui-form-label" ><i class="iconfont layui-icon-extend-bianhao" id="num" >学年</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="courseYear" class="layui-input" id="courseYear">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">学期</i></label>
+            <div class="layui-input-block">
+                <select id="semester" name="semester" lay-verify="required"  lay-filter="semesters" class="select">
+                    <option value="1" >1</option>
+                    <option value="2" >2</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">任课老师</i></label>
+            <div class="layui-input-block">
+                <select id="teachNo" name="teachNo" lay-verify="required"  lay-filter="teachNos" class="select" lay-search>
+                    <option value="" ></option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">课程类型</i></label>
+            <div class="layui-input-block">
+                <select id="type" name="type" lay-verify="required"  lay-filter="types" class="select">
+                    <option value="0" >必修</option>
+                    <option value="1" >选修</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">学时</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="courseHour" placeholder="请输入学时" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">学分</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="courseCredit" placeholder="请输入学分" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <div class="layui-form-item lau-sign-other" style="margin-top: 20px;text-align:center">
+        <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="register" style="margin-right: 100px">提交</button>
+
+    </div>
+
+</form>
+
+</body>
+<script src="/Sys/lib/layui/layui.js"></script>
+<script>
+    $(function(){
+        $.ajax({
+            type:"POST",
+            url:'/Sys/queryTeacherList',  //从数据库查询返回的是个list
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            async: false,
+            cache: false,
+            success: function (data) {
+                $.each(data,function(index,item){
+                    $('#speciality').append(new Option(item.text,item.value));//往下拉菜单里添加元素
+                })
+            }
+        });
+        //得到专业班级
+        function getClass(data){
+            var params={};
+            params.specialityNo = data.value;
+            console.log(params);
+            $.ajax({
+                type:"POST",
+                url:'/Sys/SClass/queryClassList',  //从数据库查询返回的是个list
+                dataType: "json",
+                async: false,
+                cache: false,
+                data : JSON.stringify(params),
+                contentType: "application/json",
+                success: function (data) {
+                    $("#sclass").empty();//清空下拉框的值
+                    $.each(data,function(index,item){
+                        $('#sclass').append(new Option(item.text,item.value));//往下拉菜单里添加元素
+                    });
+                    layui.form.render("select");//重新渲染 固定写法
+                }
+            });
+        }
+        var   url= 'registerStuDeal'
+        layui.use('form', function() {
+            var form = layui.form;
+            form.on('select(specialitys)', function(data){
+                getClass(data);
+            });
+            //监听提交
+            form.on('submit(register)', function(data) {
+                var loginjson= JSON.stringify(data.field);
+                var logindata=JSON.parse(loginjson);
+                data=JSON.stringify(logindata)
+                $.ajax({
+                    url : url,
+                    data : data,
+                    type:'POST',
+                    dateType:'json',
+                    contentType : 'application/json',
+                    success:function(data){
+                        if(data=="success"){
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.location.reload();//刷新父页面，注意一定要在关闭当前iframe层之前执行刷新
+                            parent.layer.close(index); //再执行关闭
+                            layer.msg("新增成功！",function(){
+                            });
+                        }
+                    },
+                    error:function(args){
+                        layer.msg("账号已经存在或者信息未填完整，注册失败！",function(){
+
+                        });
+                    }
+                });
+
+            });
+        });
+    });
+
+</script>
+</html>
