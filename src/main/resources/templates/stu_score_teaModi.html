@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册LAU</title>
+
+
+
+    <link rel="stylesheet" href="/Sys/css/layui.css">
+    <link rel="stylesheet" href="/Sys/css/sign.css">
+
+    <link rel="stylesheet" href="/Sys/js/css/modules/layui-icon-extend/iconfont.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/Sys/css/font.css">
+    <link rel="stylesheet" href="/Sys/css/xadmin.css">
+    <script type="text/javascript"
+            src="/Sys/js/jquery-3.3.1.min.js"></script>
+    <script src="/Sys/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+
+
+</head>
+<body class="layui-unselect lau-sign-body" style="padding-top: 0px">
+<form action="www.baidu.com" class="layui-form">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"> 考勤成绩</label>
+            <div class="layui-input-block">
+                <input type="text" id="attendance" name="attendance"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label"> 作业成绩</label>
+            <div class="layui-input-block">
+                <input type="text" id="work" name="work"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"> 实验成绩</label>
+            <div class="layui-input-block">
+                <input type="text" id="experiment" name="experiment"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">其他成绩</label>
+            <div class="layui-input-block">
+                <input type="text" id="other" name="other" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item lau-sign-other" style="margin-top: 20px;text-align:center">
+        <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="update" style="margin-right: 100px">提&nbsp;&nbsp;交</button>
+
+    </div>
+
+</form>
+
+
+
+</body>
+<script src="/Sys/lib/layui/layui.js"></script>
+<script  th:inline="javascript">
+    $(function(){
+        var jsonObj = parent.stuScoreJson;
+        var attendance = jsonObj.attendance;
+        var work = jsonObj.work;
+        var experiment = jsonObj.experiment;
+        var other = jsonObj.other;
+        $('#attendance').val(attendance);
+        $('#work').val(work);
+        $('#experiment').val(experiment);
+        $('#other').val(other);
+
+        layui.use('form', function() {
+            var form = layui.form;
+            //监听提交
+            form.on('submit(update)', function(data) {
+                var updateJson= data.field;
+                updateJson.specialityNo = num;
+                data=JSON.stringify(updateJson)
+                $.ajax({
+                    url : '/Sys/StuScoreDeal/updateStuScore',
+                    data : data,
+                    type:'POST',
+                    contentType: 'application/json',
+                    success:function(data){
+                        if(data.status == 1){
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.location.reload();//刷新父页面，注意一定要在关闭当前iframe层之前执行刷新
+                            parent.layer.close(index); //再执行关闭
+                            layer.msg("新增成功！",function(){
+                            });
+                        }else{
+                            layer.msg("修改失败！",function(){
+
+                            });
+                        }
+                    },
+                    error:function(args){
+                        layer.msg("账号已经存在或者信息未填完整，修改失败！",function(){
+
+                        });
+                    }
+                });
+
+            });
+        });
+    });
+
+</script>
+</html>

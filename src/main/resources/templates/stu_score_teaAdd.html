@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册LAU</title>
+
+
+
+    <link rel="stylesheet" href="/Sys/css/layui.css">
+    <link rel="stylesheet" href="/Sys/css/sign.css">
+
+    <link rel="stylesheet" href="/Sys/js/css/modules/layui-icon-extend/iconfont.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/Sys/css/font.css">
+    <link rel="stylesheet" href="/Sys/css/xadmin.css">
+
+
+    <script type="text/javascript"
+            src="/Sys/js/jquery-3.3.1.min.js"></script>
+    <script src="/Sys/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+
+
+</head>
+<body class="layui-unselect lau-sign-body" style="padding-top: 0px " >
+
+<form action="" class="layui-form">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">班级：</label>
+        <div class="layui-inline">
+        <div class="layui-input-inline layui-form">
+            <select id="sclass" name="classNo"  lay-filter="sclasss" class="select" lay-search>
+                <option value="" ></option>
+            </select>
+        </div>
+        </div>
+        <div class="layui-inline">
+        <label class="layui-form-label">课程：</label>
+        <div class="layui-input-inline layui-form">
+            <select id="course" name="courseNo" lay-filter="courses" class="select" lay-search>
+                <option value="" ></option>
+            </select>
+        </div>
+        </div>
+    </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+            <label class="layui-form-label">学生：</label>
+            <div class="layui-input-inline layui-form">
+                <select id="stu" name="stuno" lay-filter="stunos" class="select" lay-search>
+                    <option value="" ></option>
+                </select>
+            </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label"> 出勤成绩</label>
+                <div class="layui-input-block">
+                    <input type="text" id="attendance" name="attendance" placeholder="请输入出勤成绩" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"> 作业成绩</label>
+            <div class="layui-input-block">
+                <input type="text" id="work" name="work" placeholder="请输入作业成绩" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label"> 实验成绩</label>
+            <div class="layui-input-block">
+                <input type="text" id="experiment" name="experiment" placeholder="请输入实验成绩" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">其他成绩</label>
+            <div class="layui-input-block">
+                <input type="text" id="other" name="other" placeholder="请输入其他成绩" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item lau-sign-other" style="margin-top: 20px;text-align:center">
+        <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="register" style="margin-right: 100px">提交</button>
+
+    </div>
+
+</form>
+
+</body>
+<script src="/Sys/lib/layui/layui.js"></script>
+<script>
+    function getClass(){
+        var params = {};
+        $.ajax({
+            type:"POST",
+            url:'/Sys/SClass/queryClassList',  //从数据库查询返回的是个list
+            dataType: "json",
+            async: false,
+            cache: false,
+            data : JSON.stringify(params),
+            contentType: "application/json",
+            success: function (data) {
+                $.each(data,function(index,item){
+                    option = new Option(item.text,item.value)
+                    $('#sclass').append(option);//往下拉菜单里添加元素
+                });
+                // layui.form.render("select");//重新渲染 固定写法
+            }
+        });
+    }
+    function getCourse() {
+        var numObj = layui.data('user');
+        var num = numObj.userNo;
+        var params={};
+        params.teachNo = num;
+        $.ajax({
+            type:"POST",
+            url:'/Sys/CourseDeal/queryCourseList',  //从数据库查询返回的是个list
+            dataType: "json",
+            async: false,
+            cache: false,
+            data : JSON.stringify(params),
+            contentType: "application/json",
+            success: function (data) {
+                $.each(data,function(index,item){
+                    option = new Option(item.text,item.value)
+                    $('#course').append(option);//往下拉菜单里添加元素
+                });
+                // layui.form.render("select");//重新渲染 固定写法
+            }
+        });
+    }
+    function getStu(data) {
+        var params={};
+        params.classNo = data.value;
+        $.ajax({
+            type:"POST",
+            url:'/Sys/queryStuList',  //从数据库查询返回的是个list
+            dataType: "json",
+            async: false,
+            cache: false,
+            data : JSON.stringify(params),
+            contentType: "application/json",
+            success: function (data) {
+                $.each(data,function(index,item){
+                    option = new Option(item.text,item.value)
+                    $('#stu').append(option);//往下拉菜单里添加元素
+                });
+                layui.form.render("select");//重新渲染 固定写法
+            }
+        });
+    }
+    $(function(){
+        getClass();
+        getCourse();
+    });
+
+    $(function(){
+
+        var   url= '/Sys/StuScoreDeal/addStuScore'
+        layui.use('form', function() {
+            var form = layui.form;
+            form.on('select(sclasss)', function(data){
+                getStu(data);
+            });
+            //监听提交
+            form.on('submit(register)', function(data) {
+                var loginjson= JSON.stringify(data.field);
+                var logindata=JSON.parse(loginjson);
+                data=JSON.stringify(logindata)
+                $.ajax({
+                    url : url,
+                    data : data,
+                    type:'POST',
+                    dateType:'json',
+                    contentType : 'application/json',
+                    success:function(data){
+                        if(data.status == 1){
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.location.reload();//刷新父页面，注意一定要在关闭当前iframe层之前执行刷新
+                            parent.layer.close(index); //再执行关闭
+                            layer.msg("新增成功！",function(){
+                            });
+                        }else{
+                            layer.msg("录入失败！",function(){
+
+                            });
+                        }
+                    },
+                    error:function(args){
+                        layer.msg("账号已经存在或者信息未填完整，注册失败！",function(){
+
+                        });
+                    }
+                });
+
+            });
+        });
+    });
+
+</script>
+</html>

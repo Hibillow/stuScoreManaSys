@@ -61,6 +61,10 @@
         class_no as "value",
         name as "text"
         from sclass
-        where speciality = #{specialityNo}
+        <where>
+            <if test="specialityNo != null and specialityNo != ''">
+                and speciality like '%' #{specialityNo} '%'
+            </if>
+        </where>
     </select>
 </mapper>

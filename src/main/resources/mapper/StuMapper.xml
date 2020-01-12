@@ -42,7 +42,10 @@
     </select>
     
      <select id="findStuByName" resultType="com.upms.entity.Stu">
-        select * from stu where name like CONCAT(CONCAT('%',#{0}),'%') limit #{1},#{2}
+	  select s.*,c.name as sclassName,sp.name as specialityName
+      from stu s,sclass c,speciality sp
+      where s.speciality = sp.speciality_no and s.sclass = c.class_no
+	  and s.name like CONCAT(CONCAT('%',#{0}),'%') limit #{1},#{2}
     </select>
 
 
@@ -68,7 +71,9 @@
 
 
 	<select id = "getStuByNum" resultType="com.upms.entity.Stu">
-		select * from stu where stuno= #{stuno}
+		      select s.*,c.name as sclassName,sp.name as specialityName
+      from stu s,sclass c,speciality sp
+      where s.speciality = sp.speciality_no and s.sclass = c.class_no and s.stuno = #{num}
 	</select>
 	
 	<update id="updateStu">	
@@ -92,6 +97,18 @@ inner join stu s
 on s.stuno = ss.stuno
 where s.name = #{0}
 	</select>
-	
-	
+
+	<select id="queryStuList" resultType="java.util.HashMap">
+        select
+        stuno as "value",
+        name as "text"
+        from stu
+    </select>
+
+	<select id="getStuByClass" resultType="com.upms.entity.Stu">
+      select s.*,c.name as sclassName,sp.name as specialityName
+      from stu s,sclass c,speciality sp
+      where s.speciality = sp.speciality_no and s.sclass = c.class_no and s.sclass = #{sclass}
+    </select>
+
 </mapper>

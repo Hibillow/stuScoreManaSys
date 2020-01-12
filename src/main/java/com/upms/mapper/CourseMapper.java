@@ -46,4 +46,10 @@ public interface CourseMapper {
      * 设置课程成绩权重
      */
     int updateCoursePercent(Map<String, Object> map);
+
+    List<Map<String,Object>> queryCourseList();
+
+    List<Course> getCourseByTaecher(String teachNo);
+
+    Course getCourseByNum(String courseNo);
 }

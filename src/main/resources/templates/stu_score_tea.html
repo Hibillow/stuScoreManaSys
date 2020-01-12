@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="/Sys/css/layui.css">
+    <link rel="stylesheet" href="/Sys/css/sign.css">
+
+    <link rel="stylesheet"
+          href="/Sys/js/css/modules/layui-icon-extend/iconfont.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/Sys/css/font.css">
+    <link rel="stylesheet" href="/Sys/css/xadmin.css">
+    <script type="text/javascript"
+            src="/Sys/js/jquery-3.3.1.min.js"></script>
+    <script src="/Sys/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <!--<script type="text/javascript" src = "/Sys/js/jquery.table2excel.js"></script>-->
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="x-nav">
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+</div>
+<div class="x-body">
+    <div class="layui-row">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">班级：</label>
+            <div class="layui-input-inline layui-form">
+                <select id="sclass" name="sclass"  lay-filter="sclasss" class="select" lay-search>
+                    <option value="" ></option>
+                </select>
+            </div>
+
+
+
+            <label class="layui-form-label">课程：</label>
+            <div class="layui-input-inline layui-form">
+                <select id="course" name="course" lay-filter="courses" class="select" lay-search>
+                    <option value="" ></option>
+                </select>
+            </div>
+            <label class="layui-form-label">学生：</label>
+            <div class="layui-input-inline layui-form">
+                <select id="stu" name="course" lay-filter="stus" class="select" lay-search>
+                    <option value="" ></option>
+                </select>
+            </div>
+            <button class="layui-btn" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
+        </div>
+        <xblock >
+            <button class="layui-btn" onclick="stuScoreAdd()"><i class="layui-icon"></i>添加</button>
+            <button type="button" lay-submit="" class="layui-btn layui-btn-warm" id="teaexportExcel" name="exportExcel">
+                <i class="layui-icon"></i>导出Excel</button>
+        </xblock>
+        <table id="test" lay-filter="test"></table>
+    </div>
+</div>
+</body>
+
+<script type="text/html" id="barDemo">
+    <a title="修改信息 "   onclick="stuScoreModi()" href="javascript:;">
+        <i class="layui-icon">&#xe642;</i>
+    </a>
+    <a title="删除"  onclick="deleteStuScore()" href="javascript:;" lay-event="edit">
+        <i class="layui-icon">&#xe640;</i>
+    </a>
+</script>
+
+
+
+<script >
+    function getClass(){
+        var params = {};
+        $.ajax({
+            type:"POST",
+            url:'/Sys/SClass/queryClassList',  //从数据库查询返回的是个list
+            dataType: "json",
+            async: false,
+            cache: false,
+            data : JSON.stringify(params),
+            contentType: "application/json",
+            success: function (data) {
+                $.each(data,function(index,item){
+                    option = new Option(item.text,item.value)
+                    $('#sclass').append(option);//往下拉菜单里添加元素
+                });
+                // layui.form.render("select");//重新渲染 固定写法
+            }
+        });
+    }
+    function getCourse() {
+        $.ajax({
+            type:"POST",
+            url:'/Sys/CourseDeal/queryCourseList',  //从数据库查询返回的是个list
+            dataType: "json",
+            async: false,
+            cache: false,
+            contentType: "application/json",
+            success: function (data) {
+                $.each(data,function(index,item){
+                    option = new Option(item.text,item.value)
+                    $('#course').append(option);//往下拉菜单里添加元素
+                });
+                // layui.form.render("select");//重新渲染 固定写法
+            }
+        });
+    }
+    function getStu() {
+        $.ajax({
+            type:"POST",
+            url:'/Sys/queryStuList',  //从数据库查询返回的是个list
+            dataType: "json",
+            async: false,
+            cache: false,
+            contentType: "application/json",
+            success: function (data) {
+                $.each(data,function(index,item){
+                    option = new Option(item.text,item.value)
+                    $('#stu').append(option);//往下拉菜单里添加元素
+                });
+                // layui.form.render("select");//重新渲染 固定写法
+            }
+        });
+    }
+    $(function(){
+        getClass();
+        getCourse();
+        getStu();
+    });
+    function stuScoreAdd() {
+        layer.open(
+            {
+                type: 2,
+                title: '录入成绩',
+                skin: 'layui-layer-lan',
+                shadeClose: false,
+                shade: 0.8,
+                area:  ['700px', '450px'],
+                resize:true,
+                content:'stu_score_teaAdd',
+                end: function(){
+                    window.location.reload(); //刷新父页面
+                }
+            });
+    }
+    var documentWidth = $(document).width();
+    var sclass="";
+    var course="";
+    var stu='';
+    layui.use(['table','form'],function(){
+        var table = layui.table;
+        var form = layui.form;
+        form.render();
+        form.on('select(sclasss)',function(data){
+            sclass = data.value;
+        });
+
+        form.on('select(courses)',function(data){
+            course = data.value;
+
+        });
+
+        form.on('select(stus)',function(data){
+            stu = data.value;
+        });
+
+        table.render({
+            elem: '#test'  //绑定table表格
+            ,id:'csInfo'
+            ,method:'post'
+            ,url: '/Sys/StuScoreDeal/getStuScoreList' //后台springmvc接收路径
+            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
+                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
+                //,curr: 5 //设定初始在第 5 页
+                ,groups: 1 //只显示 1 个连续页码
+                ,first: false //不显示首页
+                ,last: false //不显示尾页
+                ,limit:3
+                ,limits:[3,6,9]
+            }
+            ,cols: [
+                [
+                    {type: 'checkbox',width:documentWidth*4/100}
+                    ,{field:'className',edit: 'text',title:'班级',width:documentWidth*8/100,sort:true}
+                    ,{field:'stuno',title:'学号', width:documentWidth*10/100, sort: true}
+                    ,{field:'stuName',title:'姓名', width:documentWidth*8/100,sort:true}
+                    ,{field:'courseName',title:'学科',width:documentWidth*8/100,sort:true}
+                    ,{field:'score',edit: 'text',title:'成绩',width:documentWidth*8/100,sort:true}
+                    ,{field:'operation',edit: 'text',title:'操作',toolbar: '#barDemo'}
+                ]
+            ]
+            ,where: {
+                sclass : sclass ,
+                course: course,
+                stu: stu
+            }
+        });
+
+
+
+
+        var $ = layui.$, active = {
+
+            reload: function(){
+                table.reload('csInfo', {
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    },
+                    url:'/Sys/StuScoreDeal/getStuScoreList'
+                    ,where: {
+                        sclass : sclass ,
+                        course: course,
+                        stu: stu
+                    }
+                    ,method:'post'
+                });
+            }
+        };
+
+        $('.layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+    function stuScoreModi() {
+        var json = {};
+        layui.use('table',function(){
+            var table = layui.table
+            var checkStatus = table.checkStatus('csInfo');
+            json = checkStatus.data[0];
+        });
+        window.stuScoreJson = json;
+        layer.open(
+            {
+                type: 2,
+                title: '修改成绩',
+                skin: 'layui-layer-lan',
+                shadeClose: false,
+                shade: 0.8,
+                area:  ['700px', '450px'],
+                resize:true,
+                content:'stu_score_teaModi',
+                end: function(){
+                    window.location.reload(); //刷新父页面
+                }
+            });
+    }
+
+    function deleteStuScore() {
+        layui.use('table',function(){
+            var table = layui.table
+            var checkStatus = table.checkStatus('csInfo');
+            var data = checkStatus.data[0];
+            var dataJson = JSON.stringify(data)
+            layer.confirm('确认要删除'+name+'吗？', {
+                btn : [ '确定', '取消' ]//按钮
+            }, function(index) {
+                layer.close(index);
+                $.ajax({
+                    url:'/Sys/StuScoreDeal/deleteStuScore',
+                    data:dataJson,
+                    type:'post',
+                    contentType: 'application/json',
+                    success:function(data){
+                        if(data.status == 1){
+                            parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
+                            location.reload(true);
+                        }else{
+                            layer.msg("删除失败！",function(){
+
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    }
+    layui.config({//配置并导入excel插件
+        base: '/Sys/js/layui_exts/'
+    }).use([ 'excel', 'layer'], function() {
+        var $ = layui.$;
+        var layer = layui.layer;
+        var excel = layui.excel;
+        $('#teaexportExcel').on('click', function(){
+            // 模拟从后端接口读取需要导出的数据
+            var params = {};
+            params.sclass = sclass;
+            params.course = course;
+            params.stu = stu;
+            var data = JSON.stringify(params);
+            $.ajax({
+                url: '/Sys/StuScoreDeal/getStuScoreByExcel'
+                , contentType: 'application/json'
+                ,data: data
+                ,type:'post'
+                ,success(res) {
+                    var data = res;
+                    console.log(res);
+                   // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
+                    data = excel.filterExportData(data, [
+                        'className'
+                        ,'stuno'
+                        ,'stuName'
+                        ,'courseName'
+                        ,'score'
+                    ]);
+                    // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
+                    data.unshift({ className: "班级", stuno: "学号",stuName: '姓名', courseName: "课程", score:"成绩"});
+
+                    var timestart = Date.now();
+                    excel.exportExcel(data, '学生成绩--'+timestart+'.xlsx', 'xlsx');
+                    //	var timeend = Date.now();
+
+                    //	var spent = (timeend - timestart) / 1000;
+                    //	layer.alert('单纯导出耗时 '+spent+' s');
+                }
+                ,error() {
+                    layer.alert('获取数据失败，请检查是否部署在本地服务器环境下');
+                }
+            });
+        });
+    });
+</script>
+
+</html>

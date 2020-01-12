@@ -196,4 +196,59 @@ public class ViewRoute {
 	public String coursePercent(){
 		return  "coursePercent";
 	}
+	@RequestMapping("/courseQuanZhong")
+	public String courseQuanZhong(){
+		return "courseQuanZhong";
+	}
+	//-------------成绩管理
+	@RequestMapping("/stuScoreInfo")
+	public String stuScoreInfo(){
+		return "stuScoreInfo";
+	}
+	//---------------教师管理页面
+	@RequestMapping("/personInfo_tea")
+	public String personInfo_tea(){
+		return "personInfo_tea";
+	}
+	@RequestMapping("/classInfo_tea")
+	public String classInfo_tea(){
+		return "classInfo_tea";
+	}
+	@RequestMapping("/class_stu_tea")
+	public String class_stu_tea(){
+		return "class_stu_tea";
+	}
+	@RequestMapping("/class_course_tea")
+	public String class_course_tea(){
+		return "class_course_tea";
+	}
+	@RequestMapping("/course_tea")
+	public String course_tea(){
+		return "course_tea";
+	}
+
+	@RequestMapping("/stu_score_tea")
+	public String stu_score_tea(){
+		return "stu_score_tea";
+	}
+
+	@RequestMapping("/stu_score_teaAdd")
+	public String stu_score_teaAdd(){
+		return "stu_score_teaAdd";
+	}
+
+	@RequestMapping("/stu_score_teaModi")
+	public String stu_score_teaModi(){
+		return "stu_score_teaModi";
+	}
+
+	//-----------学生信息
+	@RequestMapping("/stuInfo_mf_stu")
+	public String stuInfo_mf_stu(){
+		return "stuInfo_mf_stu";
+	}
+	@RequestMapping("/stu_score_stu")
+	public String stu_score_stu(){
+		return "stu_score_stu";
+	}
 }

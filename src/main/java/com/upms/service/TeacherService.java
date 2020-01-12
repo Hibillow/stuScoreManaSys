@@ -2,7 +2,6 @@ package com.upms.service;
 
 import java.util.List;
 import java.util.Map;
-
 import com.upms.entity.Teacher;
 
 public interface TeacherService {
@@ -20,4 +19,5 @@ public interface TeacherService {
 	int deleteTeacherByNum(String num);
 
 	List<Map<String, Object>> queryTeacherList();
+
 }

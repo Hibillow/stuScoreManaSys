@@ -1,5 +1,6 @@
 package com.upms.service.impl;
 
+import cn.hutool.core.map.MapUtil;
 import com.upms.entity.Course;
 import com.upms.entity.SClass;
 import com.upms.mapper.CourseMapper;
@@ -31,8 +32,6 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public int addCourse(Map<String, Object> map) {
-        String courseNo = UUID.randomUUID().toString().replaceAll("-","");
-        map.put("courseNo",courseNo);
         return courseMapper.addCourse(map);
     }
 
@@ -51,5 +50,20 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public int updateCoursePercent(Map<String, Object> map) {
         return courseMapper.updateCoursePercent(map);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryCourseList() {
+        return courseMapper.queryCourseList();
+    }
+
+    @Override
+    public List<Course> getCourseByTaecher(String teachNo) {
+        return courseMapper.getCourseByTaecher(teachNo);
+    }
+
+    @Override
+    public Course getCourseByNum(String courseNo) {
+        return courseMapper.getCourseByNum(courseNo);
     }
 }

@@ -65,14 +65,6 @@
 				<button type="button" class="layui-btn layui-btn-fluid" lay-submit
 					lay-filter="login">登 入</button>
 			</div>
-			<div class="layui-form-item lau-sign-other">
-				<a href="javascript:;"><i class="layui-icon layui-icon-login-qq"></i></a>
-				<a href="javascript:;"><i
-					class="layui-icon layui-icon-login-wechat"></i></a> <a
-					href="javascript:;"><i
-					class="layui-icon layui-icon-login-weibo"></i></a> <a
-					onclick="goToRes()" class="lau-sign-reg lau-sign-link"></a>
-			</div>
 
 		</div>
 	</form>
@@ -88,7 +80,7 @@
 			var form = layui.form;
 			//监听提交
 			form.on('submit(login)', function(data) {
-				var loginjson = JSON.stringify(data.field);
+                var loginjson = JSON.stringify(data.field);
 				var logindata = JSON.parse(loginjson);
 				var identify = logindata.identify;
 				if (identify == 0 || identify == 1 || identify == 2) {
@@ -98,6 +90,11 @@
 						type : 'POST',
 						success : function(data) {
 							if (data != "fail") {
+							    //登陆成功
+                                layui.data('user', {
+                                    key: 'userNo'
+                                    ,value: logindata.num
+                                });
 								layer.msg("登录成功！！！", function() {
 									if(identify==0){
 										location.href="adminIndex"

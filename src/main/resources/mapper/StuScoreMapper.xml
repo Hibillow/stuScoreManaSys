@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.upms.mapper.StuScoreMapper">
+
+    <select id="getStuScoreList" resultType="com.upms.entity.Scores">
+		select
+		s.*,c.name as className,co.name as courseName,st.name as stuName
+		from scores s,sclass c, course co, stu st
+        <where>
+            s.course_no = co.course_no and s.class_no = c.class_no and s.stuno = st.stuno
+            <if test="courseNo != null and courseNo != ''">
+                and s.course_no like '%' #{courseNo} '%'
+            </if>
+            <if test="stuno != null and stuno != ''">
+                and s.stuno like '%' #{stuno} '%'
+            </if>
+            <if test="classNo != null and classNo != ''">
+                and s.class_no like '%' #{classNo} '%'
+            </if>
+        </where>
+        order by s.stuno limit #{start},#{pagesize}
+	</select>
+
+    <select id="getCount" resultType="Integer">
+        select count(id) from scores
+        <where>
+            <if test="courseNo != null and courseNo != ''">
+                and course_no like '%' #{courseNo} '%'
+            </if>
+            <if test="stuno != null and stuno != ''">
+                and stuno like '%' #{stuno} '%'
+            </if>
+            <if test="classNo != null and classNo != ''">
+                and class_no like '%' #{classNo} '%'
+            </if>
+        </where>
+    </select>
+
+    <insert id="addStuScore" >
+        insert into scores(stuno,course_no,class_no,score,attendance,work,experiment,other)
+        values (#{stuno},#{courseNo},#{classNo},#{score},#{attendance},#{work},#{experiment},#{other})
+    </insert>
+
+    <update id="updateStuScore">
+        update scores
+        <trim prefix="set" suffixOverrides=",">
+            <if test="attendance!=null">attendance=#{attendance},</if>
+            <if test="work!=null">work=#{work},</if>
+            <if test="experiment!=null">experiment=#{experiment},</if>
+            <if test="other!=null">other=#{other},</if>
+        </trim>
+        WHERE stuno = #{stuno} and course_no = #{courseNo}
+    </update>
+    <delete id="deleteStuScore">
+        delete from scores where stuno = #{stuno} and class_no = #{classNo} and course_no = #{courseNo}
+    </delete>
+
+    <select id="getStuScoreByExcel" resultType="com.upms.entity.Scores">
+        select
+        s.*,c.name as className,co.name as courseName,st.name as stuName
+        from scores s,sclass c, course co, stu st
+        <where>
+            s.course_no = co.course_no and s.class_no = c.class_no and s.stuno = st.stuno
+            <if test="courseNo != null and courseNo != ''">
+                and s.course_no like '%' #{courseNo} '%'
+            </if>
+            <if test="stuno != null and stuno != ''">
+                and s.stuno like '%' #{stuno} '%'
+            </if>
+            <if test="classNo != null and classNo != ''">
+                and s.class_no like '%' #{classNo} '%'
+            </if>
+        </where>
+    </select>
+</mapper>
+
+
+

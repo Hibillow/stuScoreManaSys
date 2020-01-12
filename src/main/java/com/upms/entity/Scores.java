@@ -1,72 +1,110 @@
 package com.upms.entity;
 
+import javax.persistence.Transient;
+
 public class Scores {
+
+	private String courseNo;
 	private String stuno;
-	private String name;
-	private String coursename;
+	private String classNo;
+	@Transient
+	private String stuName;
+	private float attendance;
+	private float work;
+	private float experiment;
+	private float other;
 	private float score;
-	public String type;
-	public Scores() {
-		super();
+
+	@Transient
+	private String courseName;
+	@Transient
+	private  String className;
+
+	public String getCourseNo() {
+		return courseNo;
 	}
-	
-	
-	public Scores(String stuno, String coursename, float score, String type) {
-		super();
-		this.stuno = stuno;
-		this.coursename = coursename;
-		this.score = score;
-		this.type = type;
+
+	public void setCourseNo(String courseNo) {
+		this.courseNo = courseNo;
 	}
-	
-	
-	public Scores(String stuno, String name, String coursename, float score, String type) {
-		super();
-		this.stuno = stuno;
-		this.name = name;
-		this.coursename = coursename;
-		this.score = score;
-		this.type = type;
-	}
+
 	public String getStuno() {
 		return stuno;
 	}
+
 	public void setStuno(String stuno) {
 		this.stuno = stuno;
 	}
-	public String getName() {
-		return name;
+
+	public String getStuName() {
+		return stuName;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setStuName(String stuName) {
+		this.stuName = stuName;
 	}
-	public String getCoursename() {
-		return coursename;
-	}
-	public void setCoursename(String coursename) {
-		this.coursename = coursename;
-	}
+
 	public float getScore() {
 		return score;
 	}
+
 	public void setScore(float score) {
 		this.score = score;
 	}
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	@Override
-	public String toString() {
-		return "Scores [stuno=" + stuno + ", name=" + name + ", coursename=" + coursename + ", score=" + score
-				+ ", type=" + type + "]";
-	}
-	
-	
-	
-	
-	
 
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	public String getClassName() {
+		return className;
+	}
+
+	public void setClassName(String className) {
+		this.className = className;
+	}
+
+	public String getClassNo() {
+		return classNo;
+	}
+
+	public void setClassNo(String classNo) {
+		this.classNo = classNo;
+	}
+
+	public float getAttendance() {
+		return attendance;
+	}
+
+	public void setAttendance(float attendance) {
+		this.attendance = attendance;
+	}
+
+	public float getWork() {
+		return work;
+	}
+
+	public void setWork(float work) {
+		this.work = work;
+	}
+
+	public float getExperiment() {
+		return experiment;
+	}
+
+	public void setExperiment(float experiment) {
+		this.experiment = experiment;
+	}
+
+	public float getOther() {
+		return other;
+	}
+
+	public void setOther(float other) {
+		this.other = other;
+	}
 }

@@ -31,15 +31,13 @@
 		</div>
 		<ul class="layui-nav right" lay-filter="">
 			<li class="layui-nav-item"><a href="javascript:;">当前用户：<span
-					th:text="${session.name}"></span><img
+					th:text="${session.name}"></span>
+				<img
 					th:src="@{/uploads/{filename}(filename=${session.photo})}"
 					th:if="${session.account!='admin'}" /> <img
 					th:src="@{/Sys/images/my1.png}" th:if="${session.account=='admin'}" /></a>
 				<dl class="layui-nav-child">
 					<!-- 二级菜单 -->
-					<dd>
-						<a onclick="x_admin_show('个人信息','http://www.baidu.com')">个人信息</a>
-					</dd>
 					<dd>
 						<a href="loginView">切换帐号</a>
 					</dd>
@@ -56,63 +54,48 @@
 		<div id="side-nav" style="width: 100%;height: 57%">
 			<ul id="nav">
 
-				<li><a href="javascript:;"> <i 
-				class="iconfont">&#xe726;</i>  <cite>师生信息</cite> 
+				<li><a href="javascript:;"> <i class="iconfont">&#xe726;</i>  <cite>用户信息</cite>
 				<i class="iconfont nav_right">&#xe697;</i>
 				</a>
+					<ul class="sub-menu">
+						<li ><a _href="personInfo_tea"> <i class="iconfont">&#xe6a7;</i>
+							<cite>个人信息</cite>
+						</a></li>
+					</ul>
 					<ul class="sub-menu">
 						<li ><a _href="stuInfo_mf"> <i class="iconfont">&#xe6a7;</i>
 								<cite>学生信息</cite>
 						</a></li>
-						
-						
-						<li><a _href="teacherInfo_mf"> <i class="iconfont">&#xe6a7;</i>
-								<cite>教师信息</cite>
-						</a></li>	
-					</ul></li>
-
-
-
-
+					</ul>
+				</li>
+				<li><a href="javascript:;"> <i class="iconfont">&#xe726;</i>  <cite>班级信息</cite>
+					<i class="iconfont nav_right">&#xe697;</i>
+				</a>
+					<ul class="sub-menu">
+						<li ><a _href="classInfo_tea"> <i class="iconfont">&#xe6a7;</i>
+							<cite>班级信息</cite>
+						</a></li>
+					</ul>
+				</li>
+				<li><a href="javascript:;"> <i class="iconfont">&#xe726;</i>  <cite>课程信息</cite>
+					<i class="iconfont nav_right">&#xe697;</i>
+				</a>
+					<ul class="sub-menu">
+						<li ><a _href="course_tea"> <i class="iconfont">&#xe6a7;</i>
+							<cite>课程信息</cite>
+						</a></li>
+					</ul>
+				</li>
 			<li><a href="javascript:;"> <i
-						class="iconfont layui-icon-extend-chengji"></i> <cite>科目成绩管理</cite>
+						class="iconfont layui-icon-extend-chengji"></i> <cite>成绩管理</cite>
 						<i class="iconfont nav_right">&#xe697;</i>
 				</a>
 					<ul class="sub-menu">
-						<li><a _href="claCouScore"> <i class="iconfont">&#xe6a7;</i>
-								<cite>班级科目成绩</cite>
+						<li><a _href="stu_score_tea"> <i class="iconfont">&#xe6a7;</i>
+								<cite>课程成绩</cite>
 						</a></li>
 						
 					</ul></li>
-
-
-
-			<li>
-                <a href="javascript:;">
-                    <i class="iconfont">&#xe6b8;</i>
-                    <cite>统计</cite>
-                    <i class="iconfont nav_right">&#xe697;</i>
-                </a>
-                <ul class="sub-menu">
-                    <li>
-                        <a _href="parseClaCouSco">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>班级科目成绩统计</cite>                          
-                        </a>
-                    </li >
-                    <li>
-                        <a _href="parseClaComp">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>班级科目对比统计</cite>
-                        </a>
-                    </li>
-                    </ul>
-            <li>
-
-
-			
-
-
 			</ul>
 		</div>
 		<div style="background-image:url('/Sys/images/bg2.jpg'); width:100%; height:43%;bottom: 0;background-repeat: no-repeat;"></div>

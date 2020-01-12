@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  
+
   <head>
     <meta charset="UTF-8">
     <title>欢迎页面-X-admin2.0</title>
@@ -31,7 +31,7 @@
       <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
-  
+
   <body>
     <div class="x-nav">
       <span class="layui-breadcrumb">
@@ -45,7 +45,7 @@
     </div>
     <div class="x-body">
       <div class="layui-row">
-       
+
 
  <div class="demoTable" style="margin-bottom: 20px">
   搜索姓名：
@@ -53,21 +53,21 @@
     <input class="layui-input" name="id" id="demoReload" autocomplete="off">
   </div>
   <button class="layui-btn" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
-</div>   
+</div>
 
 
 
       </div>
-      
+
       <xblock >
         <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
         <button class="layui-btn" onclick="stuAdd()"><i class="layui-icon"></i>添加</button>
       </xblock>
   <table id="test" lay-filter="test"></table>
-  
-    </div>   
+
+    </div>
   </body>
-  
+
   <script type="text/html" id="barDemo">
     <a title="修改信息 "   onclick="stuModi()" href="javascript:;">
                 <i class="layui-icon">&#xe642;</i>
@@ -76,9 +76,9 @@
                 <i class="layui-icon">&#xe640;</i>
               </a>
 </script>
-  
-  
-  
+
+
+
   <script >
   var documentWidth = $(document).width();
   layui.use('table', function(){
@@ -99,7 +99,7 @@
 	    }
           ,cols: [
         	  [
-             {type: 'checkbox',width:documentWidth*4/100} 
+             {type: 'checkbox',width:documentWidth*4/100}
               ,{field:'stuno',title:'学号', width:documentWidth*10/100, sort: true}
               ,{field:'name', title:'姓名', width:documentWidth*8/100}
               ,{field:'sex',title:'性别',width:documentWidth*8/100}
@@ -110,8 +110,8 @@
           ]
         	  ]
       });
-    
-      
+
+
 	  var $ = layui.$, active = {
     		    reload: function(){
     		      var demoReload = $('#demoReload');
@@ -129,16 +129,16 @@
     		      });
     		    }
     		  };
-    		  
+
     		  $('.demoTable .layui-btn').on('click', function(){
     		    var type = $(this).data('type');
     		    active[type] ? active[type].call(this) : '';
-    		  });	  
-  	     		  
+    		  });
+
     		});
 
 
-  
+
 
   function delAll (argument) {
 	  layui.use('table',function(){
@@ -152,7 +152,7 @@
 		for(var i=0;i<checkStatus.data.length;i++){
 			nums += checkStatus.data[i].stuno+",";
 		}
-		
+
 		parent.layer.msg('删除中...', {icon: 16,shade: 0.3,time:5000});
 
 		$.ajax({
@@ -167,11 +167,11 @@
 				        parent.layer.msg('删除失败！', {icon: 2,time:3000,shade:0.2});
 			        }
 			}
-		});      
+		});
       });
-      
+
     }
-  
+
   function deleteStu(){
 	  layui.use('table',function(){
 		  var table = layui.table
@@ -196,11 +196,11 @@
                   }
               });
           });
-	  }); 
+	  });
   }
-  
+
   function stuAdd(){
-	  	
+
     	layer.open(
                 {
                     type: 2,
@@ -215,9 +215,9 @@
                     	window.location.reload(); //刷新父页面
                     }
                 });
-    	 
+
     }
-  
+
   function stuModi(){
       var json;
 	  layui.use('table',function(){
@@ -239,8 +239,8 @@
           }
 	  });
   }
-  
-  
+
+
   function screen() {
       //获取当前窗口的宽度
 	    var width = $(window).width();
@@ -254,15 +254,15 @@
 	        return 0;   //超小屏幕
 	    }
   }
-  
-  
-  
-  
-  
+
+
+
+
+
   function exportTable(){
-	  location.href="/Sys/export";  
+	  location.href="/Sys/export";
   }
-  
+
 
   layui.use(['form','layer','table','upload'], function(){
       var table = layui.table
@@ -278,6 +278,6 @@
 
 
 
-</script>  
-  
+</script>
+
 </html>

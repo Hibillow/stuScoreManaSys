@@ -15,8 +15,6 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="stylesheet" href="/Sys/css/font.css">
     <link rel="stylesheet" href="/Sys/css/xadmin.css">
-
-
     <script type="text/javascript"
             src="/Sys/js/jquery-3.3.1.min.js"></script>
     <script src="/Sys/lib/layui/layui.js" charset="utf-8"></script>
@@ -24,22 +22,20 @@
 
 
 </head>
-<body class="layui-unselect lau-sign-body" style="padding-top: 0px " >
-
-<form action="" class="layui-form">
-
+<body class="layui-unselect lau-sign-body" style="padding-top: 0px">
+<form action="www.baidu.com" class="layui-form">
     <div class="layui-form-item" >
         <div class="layui-inline">
             <label class="layui-form-label" ><i class="iconfont layui-icon-extend-bianhao" id="" >课程号</i></label>
             <div class="layui-input-block">
-                <input type="text" name="courseNo" placeholder="请输入课程号" autocomplete="off" class="layui-input" id="courseNo">
+                <input type="text" name="courseNo" readonly = "readonly" autocomplete="off" class="layui-input" id="courseNo">
             </div>
         </div>
 
         <div class="layui-inline">
             <label class="layui-form-label"><i class="iconfont layui-icon-extend-ziyuan"></i>课程名</label>
             <div class="layui-input-block">
-                <input type="text" name="name" placeholder="请输入课程名" autocomplete="off" class="layui-input">
+                <input type="text" name="name" id="name" placeholder="请输入课程名" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -88,13 +84,13 @@
         <div class="layui-inline">
             <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">学时</i></label>
             <div class="layui-input-block">
-                <input type="text" name="courseHour" placeholder="请输入学时" autocomplete="off" class="layui-input">
+                <input type="text" name="courseHour" id="courseHour" placeholder="请输入学时" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-inline">
             <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">学分</i></label>
             <div class="layui-input-block">
-                <input type="text" name="courseCredit" placeholder="请输入学分" autocomplete="off" class="layui-input">
+                <input type="text" name="courseCredit" id="courseCredit" placeholder="请输入学分" autocomplete="off" class="layui-input">
             </div>
         </div>
     </div>
@@ -107,10 +103,12 @@
 
 </form>
 
+
+
 </body>
 <script src="/Sys/lib/layui/layui.js"></script>
-<script>
-    function getTeacher(){
+<script  th:inline="javascript">
+    function getTeacher(teachNo){
         $.ajax({
             type:"POST",
             url:'/Sys/queryTeacherList',  //从数据库查询返回的是个list
@@ -120,35 +118,53 @@
             cache: false,
             success: function (data) {
                 $.each(data,function(index,item){
-                    $('#teachNo').append(new Option(item.text,item.value));//往下拉菜单里添加元素
-                })
+                    option = new Option(item.text,item.value)
+                    if(item.value == teachNo) {
+                        option.setAttribute("selected",'true');
+                    }
+                    $('#teachNo').append(option);//往下拉菜单里添加元素
+                });
             }
         });
     }
     $(function(){
-        getTeacher();
-        var   url= '/Sys/CourseDeal/addCourse';
+        var courseJson = parent.courseJson;
+        var jsonObj = JSON.parse(courseJson);
+        var num = jsonObj.courseNo;
+        var name = jsonObj.name;
+        var courseYear = jsonObj.courseYear;
+        var semester = jsonObj.semester;
+        var teachNo = jsonObj.teachNo;
+        var type = jsonObj.type;
+        var courseHour = jsonObj.courseHour;
+        var courseCredit = jsonObj.courseCredit;
+
+        $('#courseNo').val(num);
+        $('#name').val(name);
+        $('#courseYear').val(courseYear);
+        $('#courseHour').val(courseHour);
+        $('#courseCredit').val(courseCredit);
+        $('#type').val(type);
+        $('#semester').val(semester);
+        getTeacher(teachNo);
+
         layui.use('form', function() {
             var form = layui.form;
             //监听提交
             form.on('submit(register)', function(data) {
-                var loginjson= JSON.stringify(data.field);
-                var logindata=JSON.parse(loginjson);
-                data=JSON.stringify(logindata)
+                var updateJson= data.field;
+                data=JSON.stringify(updateJson)
                 $.ajax({
-                    url : url,
+                    url : '/Sys/CourseDeal/updateCourse',
                     data : data,
                     type:'POST',
-                    dateType:'json',
-                    contentType : 'application/json',
+                    contentType: 'application/json',
                     success:function(data){
-                        if(data=="success"){
-                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                            parent.location.reload();//刷新父页面，注意一定要在关闭当前iframe层之前执行刷新
-                            parent.layer.close(index); //再执行关闭
-                            layer.msg("新增成功！",function(){
-                            });
-                        }
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.location.reload();//刷新父页面，注意一定要在关闭当前iframe层之前执行刷新
+                        parent.layer.close(index); //再执行关闭
+                        layer.msg("修改成功！",function(){
+                        });
                     },
                     error:function(args){
                         layer.msg("账号已经存在或者信息未填完整，注册失败！",function(){
@@ -156,7 +172,6 @@
                         });
                     }
                 });
-
             });
         });
     });

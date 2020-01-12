@@ -61,16 +61,9 @@ public class StuInfoDeal {
 		map.put("start", start);
 		map.put("pagesize", lim);
 		List<Stu> allStu = stuService.findAllStu(map);
-		List<Stu> stu = new ArrayList<>();
-		for(int i = 0;i<allStu.size();i++) {
-			String stuno = allStu.get(i).getStuno();
-			String name = allStu.get(i).getName();
-			String sex = allStu.get(i).getSex();
-			stu.add(new Stu(stuno,name,sex));
-		}
 		int total = stuService.stuCount();
 		System.out.println(total);
-		Layui l = Layui.data(total, stu);
+		Layui l = Layui.data(total, allStu);
 		return JSON.toJSON(l);
 	}
 
@@ -159,22 +152,18 @@ public class StuInfoDeal {
 
 	}
 
-	@RequestMapping("/getScoreByStuName")
+	@RequestMapping("/queryStuList")
 	@ResponseBody
-	public String getScoreByStuName(HttpSession httpSession) {
-		String name = (String) httpSession.getAttribute("name");
-		List<Scores> scoreList = new ArrayList<>();
-		List<Scores> datas = new ArrayList<>();
-		scoreList = stuService.getScoreByStuName(name);
-		for(int i=0;i<scoreList.size();i++) {
-			if(scoreList.get(i).getType().equals("已批改")) {
-				datas.add(scoreList.get(i));
-			}
-		}
-		
-		Layui l = Layui.data(datas.size(), datas);
-		return JSON.toJSONString(l);
-
+	public Object queryStuList(){
+		return stuService.queryStuList();
 	}
 
+	@RequestMapping("/getStuByClass")
+	@ResponseBody
+	public Object getStuByClass(@RequestParam("sclass") String sclass){
+		List<Stu> stuList = stuService.getStuByClass(sclass);
+		int total = stuList.size();
+		Layui l = Layui.data(total, stuList);
+		return JSON.toJSONString(l);
+	}
 }

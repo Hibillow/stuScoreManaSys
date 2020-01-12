@@ -69,9 +69,11 @@ public class LoginResgisterDeal {
 			teaList = teacherService.findTeacher(num, SecureUtil.md5(psw));
 			if (teaList.size() > 0) {
 				String name = teaList.get(0).getName();
+				String teachNo = teaList.get(0).getTeachno();
 				String account = teaList.get(0).getTeachno();
 				httpSession.setAttribute("account", account);
 				httpSession.setAttribute("name", name);
+				httpSession.setAttribute("teachNo", teachNo);
 				httpSession.setAttribute("role", "teacher");
 				dataJson = JSON.toJSONString(teaList);
 				return dataJson;
@@ -81,9 +83,11 @@ public class LoginResgisterDeal {
 			stuList = stuService.findStu(num, SecureUtil.md5(psw));
 			if (stuList.size() > 0) {
 				String name = stuList.get(0).getName();
+				String stuno = stuList.get(0).getStuno();
 				String account = stuList.get(0).getStuno();
 				httpSession.setAttribute("account", account);
 				httpSession.setAttribute("name", name);
+				httpSession.setAttribute("stuno", stuno);
 				httpSession.setAttribute("role", "stu");
 				dataJson = JSON.toJSONString(stuList);
 				return dataJson;

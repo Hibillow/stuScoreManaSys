@@ -6,6 +6,7 @@
         select c.*,t.name as teachName
         from course c, teacher t
         <where>
+            c.teach_no = t.teachno
             <if test="courseNo != null and courseNo != ''">
                 and course_no like '%' #{courseNo} '%'
             </if>
@@ -74,4 +75,22 @@
         </trim>
         WHERE course_no = #{courseNo}
     </update>
+
+    <select id="queryCourseList" resultType="java.util.HashMap">
+        select
+        course_no as "value",
+        name as "text"
+        from course
+    </select>
+
+    <select id="getCourseByTaecher" resultType="com.upms.entity.Course">
+        select c.*,t.name as teachName
+        from course c, teacher t
+        where c.teach_no = t.teachno
+        and c.teach_no = #{teachNo}
+    </select>
+
+    <select id="getCourseByNum" resultType="com.upms.entity.Course">
+        select * from course where course_no = #{courseNo}
+    </select>
 </mapper>

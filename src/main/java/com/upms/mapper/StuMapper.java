@@ -33,5 +33,7 @@ public interface StuMapper {
 	
 	public List<Scores> getScoreByStuName(String name);
 	
-	
+	List<Map<String,Object>> queryStuList();
+
+	List<Stu> getStuByClass(String sclass);
 }

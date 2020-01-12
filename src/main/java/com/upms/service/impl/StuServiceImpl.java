@@ -88,4 +88,14 @@ public class StuServiceImpl implements StuService {
 		return stuMapper.getScoreByStuName(name);
 	}
 
+	@Override
+	public List<Map<String, Object>> queryStuList() {
+		return stuMapper.queryStuList();
+	}
+
+	@Override
+	public List<Stu> getStuByClass(String sclass) {
+		return stuMapper.getStuByClass(sclass);
+	}
+
 }

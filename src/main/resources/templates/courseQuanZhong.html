@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>注册LAU</title>
+
+
+
+    <link rel="stylesheet" href="/Sys/css/layui.css">
+    <link rel="stylesheet" href="/Sys/css/sign.css">
+
+    <link rel="stylesheet" href="/Sys/js/css/modules/layui-icon-extend/iconfont.css">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/Sys/css/font.css">
+    <link rel="stylesheet" href="/Sys/css/xadmin.css">
+    <script type="text/javascript"
+            src="/Sys/js/jquery-3.3.1.min.js"></script>
+    <script src="/Sys/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+
+
+</head>
+<body class="layui-unselect lau-sign-body" style="padding-top: 0px">
+<form action="www.baidu.com" class="layui-form">
+    <div class="layui-form-item" >
+        <div class="layui-inline">
+            <label class="layui-form-label" ><i class="iconfont layui-icon-extend-bianhao" id="" >出勤（%）</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="attendancePercent"  autocomplete="off" class="layui-input" id="attendancePercent">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item" >
+        <div class="layui-inline">
+            <label class="layui-form-label" ><i class="iconfont layui-icon-extend-bianhao" id="num" >作业（%）</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="workPercent" class="layui-input" id="workPercent">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label" ><i class="iconfont layui-icon-extend-bianhao" >实验（%）</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="experimentPercent" class="layui-input" id="experimentPercent">
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">其他（%）</i></label>
+            <div class="layui-input-block">
+                <input type="text" name="otherPercent" id="otherPercent" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+    </div>
+
+    </div>
+    <div class="layui-form-item lau-sign-other" style="margin-top: 20px;text-align:center">
+        <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="register" style="margin-right: 100px">提交</button>
+
+    </div>
+
+</form>
+
+
+
+</body>
+<script src="/Sys/lib/layui/layui.js"></script>
+<script  th:inline="javascript">
+    $(function(){
+        var courseJson = parent.courseJson;
+        console.log(courseJson)
+        var jsonObj = JSON.parse(courseJson);
+        var courseNo = jsonObj.courseNo;
+        var attendancePercent = jsonObj.attendancePercent;
+        var workPercent = jsonObj.workPercent;
+        var experimentPercent = jsonObj.experimentPercent;
+        var otherPercent = jsonObj.otherPercent;
+
+        $('#attendancePercent').val(attendancePercent);
+        $('#workPercent').val(workPercent);
+        $('#experimentPercent').val(experimentPercent);
+        $('#otherPercent').val(otherPercent);
+
+        layui.use('form', function() {
+            var form = layui.form;
+            //监听提交
+            form.on('submit(register)', function(data) {
+                var updateJson= data.field;
+                updateJson.courseNo = courseNo;
+                data=JSON.stringify(updateJson)
+                $.ajax({
+                    url : '/Sys/CourseDeal/updateCoursePercent',
+                    data : data,
+                    type:'POST',
+                    contentType: 'application/json',
+                    success:function(data){
+                        if (data.status == 1){
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.location.reload();//刷新父页面，注意一定要在关闭当前iframe层之前执行刷新
+                            parent.layer.close(index); //再执行关闭
+                            layer.msg("修改成功！",function(){
+                            });
+                        }else{
+                            layer.msg("设置失败，"+data.msg,function(){
+
+                            });
+                        }
+                    },
+                    error:function(args){
+                        layer.msg("账号已经存在或者信息未填完整，注册失败！",function(){
+
+                        });
+                    }
+                });
+            });
+        });
+    });
+
+</script>
+</html>
