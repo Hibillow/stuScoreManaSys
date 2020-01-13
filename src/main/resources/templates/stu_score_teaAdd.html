@@ -147,6 +147,7 @@
             data : JSON.stringify(params),
             contentType: "application/json",
             success: function (data) {
+                $("#stu").empty();//清空下拉框的值
                 $.each(data,function(index,item){
                     option = new Option(item.text,item.value)
                     $('#stu').append(option);//往下拉菜单里添加元素

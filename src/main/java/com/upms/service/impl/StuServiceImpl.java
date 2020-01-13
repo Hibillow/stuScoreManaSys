@@ -89,13 +89,18 @@ public class StuServiceImpl implements StuService {
 	}
 
 	@Override
-	public List<Map<String, Object>> queryStuList() {
-		return stuMapper.queryStuList();
+	public List<Map<String, Object>> queryStuList(Map<String,Object> map) {
+		return stuMapper.queryStuList(map);
 	}
 
 	@Override
 	public List<Stu> getStuByClass(String sclass) {
 		return stuMapper.getStuByClass(sclass);
+	}
+
+	@Override
+	public int addStuCourse(String stuno, String courseNo) {
+		return stuMapper.addStuCourse(stuno,courseNo);
 	}
 
 }

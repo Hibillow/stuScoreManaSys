@@ -93,4 +93,36 @@
     <select id="getCourseByNum" resultType="com.upms.entity.Course">
         select * from course where course_no = #{courseNo}
     </select>
+    <select id="getCourseByStuAndName" resultType="com.upms.entity.Course">
+        select c.*,t.name as teachName
+        from course c, teacher t
+        <where>
+            c.teach_no = t.teachno
+            <if test="name != null and name != ''">
+                and c.name like '%' #{name} '%'
+            </if>
+            <if test="type != null and type == '0'">
+                and c.course_no not in (select s.course_no from stu_course s where s.stuno = #{stuno})
+            </if>
+            <if test="type != null and type == '1'">
+                and c.course_no in (select s.course_no from stu_course s where s.stuno = #{stuno})
+            </if>
+        </where>
+        order by course_no limit #{start},#{pagesize}
+    </select>
+
+    <select id="getCountStuCourse" resultType="java.lang.Integer">
+        select count(id) from course
+        <where>
+            <if test="name != null and name != ''">
+                and name like '%' #{name} '%'
+            </if>
+            <if test="type != null and type == '0'">
+                and course_no not in (select s.course_no from stu_course s where s.stuno = #{stuno})
+            </if>
+            <if test="type != null and type == '1'">
+                and course_no in (select s.course_no from stu_course s where s.stuno = #{stuno})
+            </if>
+        </where>;
+    </select>
 </mapper>

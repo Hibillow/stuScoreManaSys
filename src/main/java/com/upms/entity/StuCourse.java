@@ -1,8 +1,8 @@
 package com.upms.entity;
 
-public class StuClass {
+public class StuCourse {
     private String stuno;
-    private String classno;
+    private String courseNo;
 
     public String getStuno() {
         return stuno;
@@ -12,11 +12,11 @@ public class StuClass {
         this.stuno = stuno;
     }
 
-    public String getClassno() {
-        return classno;
+    public String getCourseNo() {
+        return courseNo;
     }
 
-    public void setClassno(String classno) {
-        this.classno = classno;
+    public void setCourseNo(String courseNo) {
+        this.courseNo = courseNo;
     }
 }

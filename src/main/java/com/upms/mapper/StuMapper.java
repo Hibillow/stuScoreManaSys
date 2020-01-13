@@ -33,7 +33,9 @@ public interface StuMapper {
 	
 	public List<Scores> getScoreByStuName(String name);
 	
-	List<Map<String,Object>> queryStuList();
+	List<Map<String,Object>> queryStuList(Map<String,Object> map);
 
 	List<Stu> getStuByClass(String sclass);
+
+	int addStuCourse(String stuno, String courseNo);
 }

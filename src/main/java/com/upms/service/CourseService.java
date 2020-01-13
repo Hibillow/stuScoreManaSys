@@ -12,6 +12,8 @@ public interface CourseService {
 
     int getCount(Map<String, Object> map);
 
+    int getCountStuCourse(Map<String,Object> map);
+
     int addCourse(Map<String, Object> map);
 
     int updateCourse(Map<String, Object> map);
@@ -23,6 +25,8 @@ public interface CourseService {
     List<Map<String,Object>> queryCourseList();
 
     List<Course> getCourseByTaecher(String teachNo);
+
+    List<Course> getCourseByStuAndName(Map<String,Object> map);
 
     Course getCourseByNum(String courseNo);
 }

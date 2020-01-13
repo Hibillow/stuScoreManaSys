@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import cn.hutool.core.map.MapUtil;
 import com.upms.entity.Scores;
 import com.upms.entity.Stu;
 import com.upms.service.StuService;
@@ -146,7 +147,12 @@ public class StuInfoDeal {
 	@ResponseBody
 	public String updateStu(@RequestBody Map map) {
 		System.out.println("stu psw:"+map.get("psw"));
-		map.put("psw", SecureUtil.md5(map.get("psw").toString()));
+		String psw = MapUtil.getStr(map,"psw");
+		String stuno = MapUtil.getStr(map,"stuno");
+		Stu stu = stuService.getStuByNum(stuno).get(0);
+		if(!stu.getPsw().equals(psw)){
+			map.put("psw", SecureUtil.md5(map.get("psw").toString()));
+		}
 		stuService.updateStu(map);
 		return "success";
 
@@ -154,8 +160,8 @@ public class StuInfoDeal {
 
 	@RequestMapping("/queryStuList")
 	@ResponseBody
-	public Object queryStuList(){
-		return stuService.queryStuList();
+	public Object queryStuList(@RequestBody  Map<String,Object> map){
+		return stuService.queryStuList(map);
 	}
 
 	@RequestMapping("/getStuByClass")
@@ -165,5 +171,20 @@ public class StuInfoDeal {
 		int total = stuList.size();
 		Layui l = Layui.data(total, stuList);
 		return JSON.toJSONString(l);
+	}
+
+	@RequestMapping("/addStuCourse")
+	@ResponseBody
+	public Map<String, Object> addStuCourse(@RequestBody Map<String,Object> map){
+		String stuno = MapUtil.getStr(map,"stuno");
+		String courseNo = MapUtil.getStr(map,"courseNo");
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("status",0);
+		if(stuService.addStuCourse(stuno,courseNo) > 0){
+			resultMap.put("status",1);
+			return resultMap;
+		}else{
+			return resultMap;
+		}
 	}
 }

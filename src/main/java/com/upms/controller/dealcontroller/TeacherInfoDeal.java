@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.hutool.core.map.MapUtil;
 import com.upms.entity.Teacher;
 import com.upms.service.TeacherService;
 import com.upms.tools.Layui;
@@ -127,7 +128,12 @@ public class TeacherInfoDeal {
 	@ResponseBody
 	public String updateStu(@RequestBody Map map) {
 		System.out.println("teacher psw:"+map.get("psw"));
-		map.put("psw", SecureUtil.md5(map.get("psw").toString()));
+		String teachNo = MapUtil.getStr(map,"teachno");
+		String psw = MapUtil.getStr(map,"psw");
+		Teacher teacher = teacherService.findTeacherByNum(teachNo).get(0);
+		if(!teacher.getPsw().equals(psw)){
+			map.put("psw", SecureUtil.md5(map.get("psw").toString()));
+		}
 		teacherService.updateTea(map);
 		return "";
 	}

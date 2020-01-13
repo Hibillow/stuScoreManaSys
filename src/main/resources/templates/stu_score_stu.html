@@ -44,7 +44,6 @@
             <button class="layui-btn" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
         </div>
         <xblock >
-            <button class="layui-btn" onclick="stuScoreAdd()"><i class="layui-icon"></i>添加</button>
             <button type="button" lay-submit="" class="layui-btn layui-btn-warm" id="stuexportExcel" name="exportExcel">
                 <i class="layui-icon"></i>导出Excel</button>
         </xblock>
@@ -86,9 +85,11 @@
         getCourse();
     });
     var documentWidth = $(document).width();
+    var numObj = layui.data('user');
+    var num = numObj.userNo;
     var sclass="";
     var course="";
-    var stu='';
+    var stu=num;
     layui.use(['table','form'],function(){
         var table = layui.table;
         var form = layui.form;
@@ -97,7 +98,6 @@
             course = data.value;
 
         });
-
 
         table.render({
             elem: '#test'  //绑定table表格

@@ -105,4 +105,21 @@ public class CourseInfoDeal {
         Layui layui = Layui.data(total,courseList);
         return layui;
     }
+
+    @RequestMapping("/getCourseByStuAndName")
+    public Object getCourseByStuAndName(@RequestParam("limit") String limit, @RequestParam("page") String page
+            ,@RequestParam("stuno") String stuno,@RequestParam("name") String name,@RequestParam("type") String type){
+        int lim = Integer.parseInt(limit);
+        int start = (Integer.parseInt(page) - 1) * lim;
+        Map<String, Object> map = new HashMap<>();
+        map.put("start", start);
+        map.put("pagesize", lim);
+        map.put("name",name);
+        map.put("stuno",stuno);
+        map.put("type",type);
+        List<Course> courseList = courseService.getCourseByStuAndName(map);
+        int total = courseService.getCountStuCourse(map);
+        Layui layui = Layui.data(total,courseList);
+        return layui;
+    }
 }

@@ -103,6 +103,11 @@ where s.name = #{0}
         stuno as "value",
         name as "text"
         from stu
+		<where>
+			<if test="classNo != null and classNo != ''">
+				and sclass = #{classNo}
+			</if>
+		</where>
     </select>
 
 	<select id="getStuByClass" resultType="com.upms.entity.Stu">
@@ -111,4 +116,7 @@ where s.name = #{0}
       where s.speciality = sp.speciality_no and s.sclass = c.class_no and s.sclass = #{sclass}
     </select>
 
+	<insert id="addStuCourse">
+		insert into stu_course(stuno,course_no)values (#{stuno},#{courseNo})
+	</insert>
 </mapper>

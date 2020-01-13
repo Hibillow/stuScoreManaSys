@@ -31,6 +31,11 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public int getCountStuCourse(Map<String,Object> map) {
+        return courseMapper.getCountStuCourse(map);
+    }
+
+    @Override
     public int addCourse(Map<String, Object> map) {
         return courseMapper.addCourse(map);
     }
@@ -60,6 +65,11 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> getCourseByTaecher(String teachNo) {
         return courseMapper.getCourseByTaecher(teachNo);
+    }
+
+    @Override
+    public List<Course> getCourseByStuAndName(Map<String,Object> map) {
+        return courseMapper.getCourseByStuAndName(map);
     }
 
     @Override

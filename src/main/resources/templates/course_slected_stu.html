@@ -79,7 +79,7 @@
             elem: '#test'  //绑定table表格
             ,id:'courseInfo'
             ,method:'post'
-            ,url: '/Sys/CourseDeal/getCourseByTaecher?teachNo='+ num//后台springmvc接收路径
+            ,url: '/Sys/CourseDeal/getCourseByStuAndName?stuno='+num+'&type=1'+'&name=""' //后台springmvc接收路径
             ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
                 //,curr: 5 //设定初始在第 5 页
@@ -104,36 +104,40 @@
                             return '选修';
                         }
                     }}
-                    ,{field:'oper1', title:'权重设置', width:documentWidth*8/100, event:'setQuanZhong', style:'cursor:pointer;'
+                    ,{field:'oper1', title:'选课', width:documentWidth*8/100, event:'xuanke', style:'cursor:pointer;'
                     ,templet: function(res) {
-                        return "<div style='color:blue'>设置权重</div>";
+                        return "<div style='color:blue'>选课</div>";
                     }
                 }
-                    ,{field:'operation',title:'操作',toolbar: '#barDemo'}
                 ]
             ]
         });
         layui.use('table', function(){
             var table = layui.table;
+            var numObj = layui.data('user');
+            var num = numObj.userNo;
             //监听单元格事件
             table.on('tool(test)', function(obj){
                 var data = obj.data;
-                if(obj.event === 'setQuanZhong'){
-                    window.courseJson = JSON.stringify(data);
-                    layer.open(
-                        {
-                            type: 2,
-                            title: '设置权重['+data.name + ']',
-                            skin: 'layui-layer-lan',
-                            shadeClose: false,
-                            shade: 0.8,
-                            area:  ['700px', '450px'],
-                            resize:true,
-                            content:'courseQuanZhong',
-                            end: function(){
-                                window.location.reload(); //刷新父页面
+                if(obj.event === 'xuanke'){
+                    layer.confirm('确认选修修课程'+data.name+'吗？', {
+                        btn : [ '确定', '取消' ]//按钮
+                    }, function(index) {
+                        layer.close(index);
+                        $.ajax({
+                            url:'/Sys/courseDeal/deletecourse',
+                            data:{'stuno':num,'courseNo':data.courseNo},
+                            type:'post',
+                            success:function(data){
+                                if(data=="success"){
+                                    parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
+                                    location.reload(true);
+                                }else{
+                                    parent.layer.msg('删除失败！', {icon: 2,time:3000,shade:0.2});
+                                }
                             }
                         });
+                    });
                 }
             });
         });
@@ -144,12 +148,8 @@
                 table.reload('courseInfo', {
                     page: {
                         curr: 1 //重新从第 1 页开始
-                    },
-                    url:'/Sys/CourseDeal/getCourseInfoList'
-                    ,where: {
-                        name: demoReload.val(),
-                        teachNo : num
                     }
+                    , url:'/Sys/CourseDeal/getCourseByStuAndName?stuno='+num+'&type=1'+'&name='+demoReload.val()
                     ,method:'post'
                 });
             }

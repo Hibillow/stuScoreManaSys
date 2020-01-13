@@ -92,7 +92,6 @@
                     option = new Option(item.text,item.value)
                     $('#sclass').append(option);//往下拉菜单里添加元素
                 });
-                layui.form.render("select");//重新渲染 固定写法
             }
         });
     }
@@ -109,7 +108,6 @@
                     option = new Option(item.text,item.value)
                     $('#course').append(option);//往下拉菜单里添加元素
                 });
-                layui.form.render("select");//重新渲染 固定写法
             }
         });
     }
@@ -126,7 +124,7 @@
                     option = new Option(item.text,item.value)
                     $('#stu').append(option);//往下拉菜单里添加元素
                 });
-                layui.form.render("select");//重新渲染 固定写法
+                // layui.form.render("select");//重新渲染 固定写法
             }
         });
     }
@@ -139,7 +137,7 @@
     layui.use(['table','form'],function(){
         var sclass="";
         var course="";
-        var stu='未批改';
+        var stu='';
         var table = layui.table;
         var form = layui.form;
         form.render();
@@ -160,7 +158,7 @@
             elem: '#test'  //绑定table表格
             ,id:'csInfo'
             ,method:'post'
-            ,url: '/Sys/StuScoreDeal/getStuScoreList' //后台springmvc接收路径
+            ,url: '/Sys/StuScoreDeal/getStuScoreList?sclass=&course=&stu=' //后台springmvc接收路径
             ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
                 //,curr: 5 //设定初始在第 5 页
@@ -173,12 +171,11 @@
             ,cols: [
                 [
                     {type: 'checkbox',width:documentWidth*4/100}
+                    ,{field:'className',edit: 'text',title:'班级',width:documentWidth*8/100,sort:true}
                     ,{field:'stuno',title:'学号', width:documentWidth*10/100, sort: true}
-                    ,{field:'name',title:'姓名', width:documentWidth*8/100,sort:true}
-                    ,{field:'coursename',title:'学科',width:documentWidth*8/100,sort:true}
+                    ,{field:'stuName',title:'姓名', width:documentWidth*8/100,sort:true}
+                    ,{field:'courseName',title:'学科',width:documentWidth*8/100,sort:true}
                     ,{field:'score',edit: 'text',title:'成绩',width:documentWidth*8/100,sort:true}
-                    ,{field:'type',edit: 'text',title:'类型',width:documentWidth*8/100,sort:true}
-                    ,{field:'operation',edit: 'text',title:'操作',toolbar: '#barDemo'}
                 ]
             ]
             ,where: {

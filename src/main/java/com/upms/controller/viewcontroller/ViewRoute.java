@@ -251,4 +251,12 @@ public class ViewRoute {
 	public String stu_score_stu(){
 		return "stu_score_stu";
 	}
+	@RequestMapping("/course_slect_stu")
+	public String course_slect_stu(){
+		return "course_slect_stu";
+	}
+	@RequestMapping("/course_slected_stu")
+	public String course_slected_stu(){
+		return "course_slected_stu";
+	}
 }

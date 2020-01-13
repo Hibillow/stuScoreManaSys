@@ -2,6 +2,7 @@ package com.upms.mapper;
 
 import com.upms.entity.Course;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -51,5 +52,9 @@ public interface CourseMapper {
 
     List<Course> getCourseByTaecher(String teachNo);
 
+    List<Course> getCourseByStuAndName(Map<String,Object> map);
+
     Course getCourseByNum(String courseNo);
+
+    int getCountStuCourse(Map<String,Object> map);
 }
