@@ -119,4 +119,8 @@ where s.name = #{0}
 	<insert id="addStuCourse">
 		insert into stu_course(stuno,course_no)values (#{stuno},#{courseNo})
 	</insert>
+
+	<delete id="deleteStuCourse">
+		delete from stu_course where stuno = #{stuno} and course_no = #{courseNo}
+	</delete>
 </mapper>

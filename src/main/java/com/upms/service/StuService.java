@@ -33,5 +33,7 @@ public interface StuService {
 
 	List<Stu> getStuByClass(String sclass);
 
-	int addStuCourse(String stuno,String courseNo);
+	int addStuCourse(Map<String,Object> map);
+
+	int deleteStuCourse(Map<String,Object> map);
 }

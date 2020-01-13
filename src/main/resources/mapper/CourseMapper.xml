@@ -101,10 +101,10 @@
             <if test="name != null and name != ''">
                 and c.name like '%' #{name} '%'
             </if>
-            <if test="type != null and type == '0'">
+            <if test="type != null and type == '0'.toString()">
                 and c.course_no not in (select s.course_no from stu_course s where s.stuno = #{stuno})
             </if>
-            <if test="type != null and type == '1'">
+            <if test="type != null and type == '1'.toString()">
                 and c.course_no in (select s.course_no from stu_course s where s.stuno = #{stuno})
             </if>
         </where>

@@ -122,4 +122,5 @@ public class CourseInfoDeal {
         Layui layui = Layui.data(total,courseList);
         return layui;
     }
+
 }

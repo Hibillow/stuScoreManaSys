@@ -99,8 +99,13 @@ public class StuServiceImpl implements StuService {
 	}
 
 	@Override
-	public int addStuCourse(String stuno, String courseNo) {
-		return stuMapper.addStuCourse(stuno,courseNo);
+	public int addStuCourse(Map<String,Object> map) {
+		return stuMapper.addStuCourse(map);
+	}
+
+	@Override
+	public int deleteStuCourse(Map<String, Object> map) {
+		return stuMapper.deleteStuCourse(map);
 	}
 
 }

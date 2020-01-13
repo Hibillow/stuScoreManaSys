@@ -176,11 +176,22 @@ public class StuInfoDeal {
 	@RequestMapping("/addStuCourse")
 	@ResponseBody
 	public Map<String, Object> addStuCourse(@RequestBody Map<String,Object> map){
-		String stuno = MapUtil.getStr(map,"stuno");
-		String courseNo = MapUtil.getStr(map,"courseNo");
 		Map<String, Object> resultMap = new HashMap<>();
 		resultMap.put("status",0);
-		if(stuService.addStuCourse(stuno,courseNo) > 0){
+		if(stuService.addStuCourse(map) > 0){
+			resultMap.put("status",1);
+			return resultMap;
+		}else{
+			return resultMap;
+		}
+	}
+
+	@RequestMapping("/deleteStuCourse")
+	@ResponseBody
+	public Map<String,Object> deleteStuCourse(@RequestBody Map<String,Object> map){
+		Map<String, Object> resultMap = new HashMap<>();
+		resultMap.put("status",0);
+		if(stuService.deleteStuCourse(map) > 0){
 			resultMap.put("status",1);
 			return resultMap;
 		}else{

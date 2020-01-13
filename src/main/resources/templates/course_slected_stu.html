@@ -79,7 +79,7 @@
             elem: '#test'  //绑定table表格
             ,id:'courseInfo'
             ,method:'post'
-            ,url: '/Sys/CourseDeal/getCourseByStuAndName?stuno='+num+'&type=1'+'&name=""' //后台springmvc接收路径
+            ,url: '/Sys/CourseDeal/getCourseByStuAndName?stuno='+num+'&type=1'+'&name=' //后台springmvc接收路径
             ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
                 //,curr: 5 //设定初始在第 5 页
@@ -104,9 +104,9 @@
                             return '选修';
                         }
                     }}
-                    ,{field:'oper1', title:'选课', width:documentWidth*8/100, event:'xuanke', style:'cursor:pointer;'
+                    ,{field:'oper1', title:'选课', width:documentWidth*8/100, event:'deleteStuCourse', style:'cursor:pointer;'
                     ,templet: function(res) {
-                        return "<div style='color:blue'>选课</div>";
+                        return "<div style='color:blue'>删除</div>";
                     }
                 }
                 ]
@@ -119,17 +119,21 @@
             //监听单元格事件
             table.on('tool(test)', function(obj){
                 var data = obj.data;
-                if(obj.event === 'xuanke'){
-                    layer.confirm('确认选修修课程'+data.name+'吗？', {
+                var params = {};
+                params.stuno = num;
+                params.courseNo = data.courseNo;
+                if(obj.event === 'deleteStuCourse'){
+                    layer.confirm('确认删除课程'+data.name+'吗？', {
                         btn : [ '确定', '取消' ]//按钮
                     }, function(index) {
                         layer.close(index);
                         $.ajax({
-                            url:'/Sys/courseDeal/deletecourse',
-                            data:{'stuno':num,'courseNo':data.courseNo},
+                            url:'/Sys/deleteStuCourse',
+                            data:JSON.stringify(params),
                             type:'post',
+                            contentType: "application/json",
                             success:function(data){
-                                if(data=="success"){
+                                if(data.status == 1){
                                     parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
                                     location.reload(true);
                                 }else{
@@ -161,94 +165,6 @@
         });
 
     });
-
-    function deletecourse(){
-        layui.use('table',function(){
-            var table = layui.table
-            var checkStatus = table.checkStatus('courseInfo');
-            var num = checkStatus.data[0].courseNo;
-            var name = checkStatus.data[0].name;
-            layer.confirm('确认要删除'+name+'吗？', {
-                btn : [ '确定', '取消' ]//按钮
-            }, function(index) {
-                layer.close(index);
-                $.ajax({
-                    url:'/Sys/courseDeal/deletecourse',
-                    data:{'courseNo':num},
-                    type:'post',
-                    success:function(data){
-                        if(data=="success"){
-                            parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
-                            location.reload(true);
-                        }else{
-                            parent.layer.msg('删除失败！', {icon: 2,time:3000,shade:0.2});
-                        }
-                    }
-                });
-            });
-        });
-    }
-
-    function courseAdd(){
-
-        layer.open(
-            {
-                type: 2,
-                title: '增加课程',
-                skin: 'layui-layer-lan',
-                shadeClose: false,
-                shade: 0.8,
-                area:  ['700px', '450px'],
-                resize:true,
-                content:'courseAdd',
-                end: function(){
-                    window.location.reload(); //刷新父页面
-                }
-            });
-    }
-
-    function courseModi(){
-        var json;
-        layui.use('table',function(){
-            var table = layui.table
-            var checkStatus = table.checkStatus('courseInfo');
-            json = JSON.stringify(checkStatus.data[0]);
-        });
-        window.courseJson = json;
-        layer.open({
-            type: 2,
-            title: '编辑课程',
-            skin: 'layui-layer-molv',
-            shadeClose: false,
-            shade: 0.8,
-            area:  ['700px', '450px'],
-            content: 'courseModi',
-            end: function(){
-                window.location.reload(); //刷新父页面
-            }
-        });
-    }
-    function setQuanZhong(data) {
-        var json;
-        layui.use('table',function(){
-            var table = layui.table
-            var checkStatus = table.checkStatus('courseInfo');
-            json = JSON.stringify(checkStatus.data[0]);
-        });
-        window.courseJson = json;
-        layer.open({
-            type: 2,
-            title: '设置权重',
-            skin: 'layui-layer-molv',
-            shadeClose: false,
-            shade: 0.8,
-            area:  ['700px', '450px'],
-            content: 'courseQuanZhong',
-            end: function(){
-                window.location.reload(); //刷新父页面
-            }
-        });
-    }
 
     function screen() {
         //获取当前窗口的宽度
