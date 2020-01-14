@@ -54,6 +54,7 @@
 
     <xblock >
         <button class="layui-btn" onclick="courseAdd()"><i class="layui-icon"></i>添加</button>
+        <button class="layui-btn" onclick="setQuanZhongBatch()"><i class="layui-icon"></i>批量设置权重</button>
     </xblock>
     <table id="test" lay-filter="test"></table>
 
@@ -158,7 +159,7 @@
         });
 
     });
-
+    
     function deletecourse(){
         layui.use('table',function(){
             var table = layui.table
@@ -202,6 +203,39 @@
                     window.location.reload(); //刷新父页面
                 }
             });
+    }
+    function setQuanZhongBatch() {
+        var courseNos=[];
+        var hasChecked = true;
+        layui.use('table',function(){
+            var table = layui.table
+            var checkStatus = table.checkStatus('courseInfo');
+            var checkedData = checkStatus.data;
+            if(checkedData.length == 0){
+                parent.layer.msg('请选择课程！', {icon: 2,time:2000,shade:0.2});
+                hasChecked = false;
+                return;
+            }
+            for (var i=0; i<checkedData.length; i++){
+                courseNos[i] = checkedData[i].courseNo;
+            }
+        });
+        if(!hasChecked){
+            return;
+        }
+        window.nums = courseNos.join();
+        layer.open({
+            type: 2,
+            title: '设置权重',
+            skin: 'layui-layer-molv',
+            shadeClose: false,
+            shade: 0.8,
+            area:  ['700px', '450px'],
+            content: 'courseQuanZhongBatch',
+            end: function(){
+                window.location.reload(); //刷新父页面
+            }
+        });
     }
 
     function courseModi(){

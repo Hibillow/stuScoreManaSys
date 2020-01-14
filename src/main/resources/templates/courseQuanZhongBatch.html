@@ -73,26 +73,13 @@
 <script src="/Sys/lib/layui/layui.js"></script>
 <script  th:inline="javascript">
     $(function(){
-        var courseJson = parent.courseJson;
-        console.log(courseJson)
-        var jsonObj = JSON.parse(courseJson);
-        var courseNo = jsonObj.courseNo;
-        var attendancePercent = jsonObj.attendancePercent;
-        var workPercent = jsonObj.workPercent;
-        var experimentPercent = jsonObj.experimentPercent;
-        var otherPercent = jsonObj.otherPercent;
-
-        $('#attendancePercent').val(attendancePercent);
-        $('#workPercent').val(workPercent);
-        $('#experimentPercent').val(experimentPercent);
-        $('#otherPercent').val(otherPercent);
-
+        var nums = parent.nums;
         layui.use('form', function() {
             var form = layui.form;
             //监听提交
             form.on('submit(register)', function(data) {
                 var updateJson= data.field;
-                updateJson.courseNos = courseNo;
+                updateJson.courseNos = nums;
                 data=JSON.stringify(updateJson)
                 $.ajax({
                     url : '/Sys/CourseDeal/updateCoursePercent',

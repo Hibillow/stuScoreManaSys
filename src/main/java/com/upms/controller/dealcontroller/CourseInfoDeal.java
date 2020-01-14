@@ -5,13 +5,12 @@ import com.alibaba.fastjson.JSON;
 import com.upms.entity.Course;
 import com.upms.service.CourseService;
 import com.upms.tools.Layui;
+import com.upms.tools.MyTool;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @description课程信息
@@ -76,6 +75,19 @@ public class CourseInfoDeal {
         int experimentPercent = MapUtil.getInt(map,"experimentPercent");
         int otherPercent = MapUtil.getInt(map,"otherPercent");
         int all = attendancePercent + workPercent + experimentPercent + otherPercent;
+        String courseNos = MapUtil.getStr(map, "courseNos");
+        List<String> courseNoList = Arrays.asList(courseNos.split(","));
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        for (String s : courseNoList) {
+            Map<String, Object> tempMap = new HashMap<>();
+            tempMap.put("attendancePercent",attendancePercent);
+            tempMap.put("workPercent",workPercent);
+            tempMap.put("experimentPercent",experimentPercent);
+            tempMap.put("otherPercent",otherPercent);
+            tempMap.put("courseNo",s);
+            mapList.add(tempMap);
+        }
+        map.put("list",mapList);
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("status", 0);
         if(all != 100){

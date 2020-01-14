@@ -47,7 +47,7 @@
         values (#{courseNo},#{name},#{courseHour},#{courseCredit},#{courseYear},#{semester},#{type},#{teachNo})
     </insert>
 
-    <update id="updateCourse">
+    <update id="updateCourse" parameterType="java.util.Map">
         update course
         <trim prefix="set" suffixOverrides=",">
             <if test="name!=null">name=#{name},</if>
@@ -65,15 +65,17 @@
         delete from course where course_no in(#{courseNos})
     </delete>
     
-    <update id="updateCoursePercent">
-        update course
-        <trim prefix="set" suffixOverrides=",">
-            <if test="attendancePercent!=null">attendance_percent=#{attendancePercent},</if>
-            <if test="workPercent!=null">work_percent=#{workPercent},</if>
-            <if test="experimentPercent!=null">experiment_percent=#{experimentPercent},</if>
-            <if test="otherPercent!=null">other_percent=#{otherPercent},</if>
-        </trim>
-        WHERE course_no = #{courseNo}
+    <update id="updateCoursePercent" parameterType="java.util.Map">
+        <foreach collection="list" separator=";" item="cus">
+            update course
+            <trim prefix="set" suffixOverrides=",">
+                <if test="cus.attendancePercent!=null">attendance_percent=#{cus.attendancePercent},</if>
+                <if test="cus.workPercent!=null">work_percent=#{cus.workPercent},</if>
+                <if test="cus.experimentPercent!=null">experiment_percent=#{cus.experimentPercent},</if>
+                <if test="cus.otherPercent!=null">other_percent=#{cus.otherPercent},</if>
+            </trim>
+            WHERE course_no =#{cus.courseNo}
+        </foreach>
     </update>
 
     <select id="queryCourseList" resultType="java.util.HashMap">
