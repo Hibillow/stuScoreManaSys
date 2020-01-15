@@ -118,6 +118,13 @@ public class CourseInfoDeal {
         return layui;
     }
 
+    @RequestMapping("/getCourseByCourseNo")
+    public Object getCourseByCourseNo(@RequestBody Map map){
+        String courseNo = MapUtil.getStr(map,"courseNo");
+        Course course = courseService.getCourseByNum(courseNo);
+        return course;
+    }
+
     @RequestMapping("/getCourseByStuAndName")
     public Object getCourseByStuAndName(@RequestParam("limit") String limit, @RequestParam("page") String page
             ,@RequestParam("stuno") String stuno,@RequestParam("name") String name,@RequestParam("type") String type){

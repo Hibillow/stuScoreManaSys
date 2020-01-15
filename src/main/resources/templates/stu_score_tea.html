@@ -278,7 +278,7 @@
                     contentType: 'application/json',
                     success:function(data){
                         if(data.status == 1){
-                            parent.layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
+                            layer.msg('删除成功！', {icon: 1,time:2000,shade:0.2});
                             location.reload(true);
                         }else{
                             layer.msg("删除失败！",function(){
@@ -297,42 +297,72 @@
         var layer = layui.layer;
         var excel = layui.excel;
         $('#teaexportExcel').on('click', function(){
+            if(course == null || course == ''){
+                parent.layer.msg('请选择课程！', {icon: 2,time:2000,shade:0.2});
+                return;
+            }
             // 模拟从后端接口读取需要导出的数据
             var params = {};
-            params.sclass = sclass;
-            params.course = course;
-            params.stu = stu;
+            params.classNo = sclass;
+            params.courseNo = course;
+            params.stuno = stu;
             var data = JSON.stringify(params);
-            $.ajax({
-                url: '/Sys/StuScoreDeal/getStuScoreByExcel'
-                , contentType: 'application/json'
-                ,data: data
-                ,type:'post'
-                ,success(res) {
-                    var data = res;
-                    console.log(res);
-                   // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
-                    data = excel.filterExportData(data, [
-                        'className'
-                        ,'stuno'
-                        ,'stuName'
-                        ,'courseName'
-                        ,'score'
-                    ]);
-                    // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
-                    data.unshift({ className: "班级", stuno: "学号",stuName: '姓名', courseName: "课程", score:"成绩"});
+            //获取课程信息
+            var courseParams = {};
+            courseParams.courseNo = course;
+            if(course != null && course != ''){
+                $.ajax({
+                    url : '/Sys/CourseDeal/getCourseByCourseNo'
+                    , contentType: 'application/json'
+                    ,type:'post'
+                    ,data:JSON.stringify(courseParams)
+                    ,success(res){
+                        if(res == null){
+                            return;
+                        }
+                        var course = res;
+                        var attendancePercent = course.attendancePercent;
+                        var workPercent = course.workPercent;
+                        var experimentPercent = course.experimentPercent;
+                        var otherPercent = course.otherPercent;
+                        var courseName = course.name;
+                        $.ajax({
+                            url: '/Sys/StuScoreDeal/getStuScoreByExcel'
+                            , contentType: 'application/json'
+                            ,data: data
+                            ,type:'post'
+                            ,success(res) {
+                                var data = res;
+                                // 重点！！！如果后端给的数据顺序和映射关系不对，请执行梳理函数后导出
+                                data = excel.filterExportData(data, [
+                                    'className'
+                                    ,'stuno'
+                                    ,'stuName'
+                                    ,'courseName'
+                                    ,'attendance'
+                                    ,'work'
+                                    ,'experiment',
+                                    ,'other'
+                                    ,'score'
+                                ]);
+                                // 重点2！！！一般都需要加一个表头，表头的键名顺序需要与最终导出的数据一致
+                                data.unshift({ className: "班级", stuno: "学号",stuName: '姓名', courseName: "课程"
+                                    , attendance:"出勤成绩（"+attendancePercent+"%）", work : "作业成绩（"+workPercent+"%）", experiment:"实验成绩（"+experimentPercent+"%）"
+                                    , other:"其他成绩（"+otherPercent+"%）",score:"成绩"});
 
-                    var timestart = Date.now();
-                    excel.exportExcel(data, '学生成绩--'+timestart+'.xlsx', 'xlsx');
-                    //	var timeend = Date.now();
-
-                    //	var spent = (timeend - timestart) / 1000;
-                    //	layer.alert('单纯导出耗时 '+spent+' s');
-                }
-                ,error() {
-                    layer.alert('获取数据失败，请检查是否部署在本地服务器环境下');
-                }
-            });
+                                var timestart = Date.now();
+                                excel.exportExcel(data, courseName+'-学生成绩--'+timestart+'.xlsx', 'xlsx');
+                            }
+                            ,error() {
+                                layer.alert('获取数据失败，请检查是否部署在本地服务器环境下');
+                            }
+                        });
+                    }
+                    ,error() {
+                        layer.alert('获取数据失败，请检查是否部署在本地服务器环境下');
+                    }
+                });
+            }
         });
     });
 </script>
