@@ -93,11 +93,54 @@
                     ,{field:'name', title:'班级名', width:documentWidth*8/100}
                     ,{field:'grade',title:'入学年份',width:documentWidth*8/100}
                     ,{field:'specialityName', title:'专业', width:documentWidth*10/100}
+                    ,{field:'oper2', title:'课程表', width:documentWidth*8/100, event:'showCourses', style:'cursor:pointer;'
+                        ,templet: function(res) {
+                            return "<div style='color:blue'>课程表</div>";
+                        }
+                    }
                     ,{field:'operation',title:'操作',toolbar: '#barDemo'}
                 ]
             ]
         });
-
+        layui.use('table', function(){
+            var table = layui.table;
+            //监听单元格事件
+            table.on('tool(test)', function(obj){
+                var data = obj.data;
+                if(obj.event === 'showStu'){
+                    window.classJson = JSON.stringify(data);
+                    var index = layer.open({
+                        type: 2,
+                        title: '学生信息',
+                        skin: 'layui-layer-molv',
+                        shadeClose: false,
+                        shade: 0.8,
+                        area: ["1200px", "600px"],
+                        maxmin: true,
+                        content: 'class_stu_tea',
+                        end: function(){
+                            window.location.reload(); //刷新父页面
+                        }
+                    });
+                    layer.full(index);
+                }else if(obj.event === 'showCourses'){
+                    window.classJson = JSON.stringify(data);
+                    var index = layer.open({
+                        type: 2,
+                        title: '课程表',
+                        skin: 'layui-layer-molv',
+                        shadeClose: false,
+                        shade: 0.8,
+                        area: ["1200px", "600px"],
+                        content: 'course_time_table',
+                        end: function(){
+                            window.location.reload(); //刷新父页面
+                        }
+                    });
+                    layer.full(index);
+                }
+            });
+        });
 
         var $ = layui.$, active = {
             reload: function(){
