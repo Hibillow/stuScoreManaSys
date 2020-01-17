@@ -39,7 +39,7 @@
     <div class="layui-row">
 
         <div class="layui-form-item">
-            <label class="layui-form-label">课程：</label>
+            <label class="layui-form-label">学年：</label>
             <div class="layui-input-inline layui-form">
                 <select id="course" name="course" lay-filter="courses" class="select" lay-search>
                     <option value="" ></option>
@@ -53,7 +53,23 @@
             </div>
             <button class="layui-btn" data-type="reload" ><i class="layui-icon">&#xe615;</i></button>
         </div>
-        <table id="test" lay-filter="test"></table>
+    </div>
+        <xblock >
+            <button class="layui-btn" onclick="classTimeTableAdd()"><i class="layui-icon"></i>添加</button>
+        </xblock>
+        <table id="test" class="layui-table" lay-size="lg">
+            <thead>
+            <tr>
+                <th><span>星期一</span></th>
+                <th><span>星期二</span></th>
+                <th><span>星期三</span></th>
+                <th><span>星期四</span></th>
+                <th><span>星期五</span></th>
+                <th><span>星期六</span></th>
+                <th><span>星期天</span></th>
+            </tr>
+            </thead>
+        </table>
     </div>
 </div>
 </body>
@@ -63,35 +79,26 @@
     var classJson = parent.classJson;
     var jsonObj = JSON.parse(classJson);
     var sclass = jsonObj.classNo;
-    layui.use('table', function(){
-        var table = layui.table;
-        table.render({
-            elem: '#test'  //绑定table表格
-            ,id:'stuInfo'
-            ,method:'post'
-            ,url: 'getStuByClass?sclass='+sclass //后台springmvc接收路径
-            ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
-                layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
-                //,curr: 5 //设定初始在第 5 页
-                ,groups: 1 //只显示 1 个连续页码
-                ,first: false //不显示首页
-                ,last: false //不显示尾页
-                ,limit:5
-                ,limits:[5,10,15]
-            }
-            ,cols: [
-                [
-                    {type: 'checkbox',width:documentWidth*4/100}
-                    ,{field:'stuno',title:'学号', width:documentWidth*10/100, sort: true}
-                    ,{field:'name', title:'姓名', width:documentWidth*8/100}
-                    ,{field:'sex',title:'性别',width:documentWidth*8/100}
-                    ,{field:'grade', title:'年级', width:documentWidth*10/100}
-                    ,{field:'sclassName', title:'班级', width:documentWidth*10/100}
-                    ,{field:'specialityName', title:'专业', width:documentWidth*10/100}
-                ]
-            ]
-        });
+    $(function(){
+        //请求数据，渲染表格
     });
+    
+    function classTimeTableAdd() {
+        window.classNo = sclass;
+        layer.open({
+            type: 2,
+            title: '导入课程表',
+            skin: 'layui-layer-molv',
+            shadeClose: false,
+            shade: 0.8,
+            area:  ['700px', '450px'],
+            content: 'course_table_time_add',
+            end: function(){
+                window.location.reload(); //刷新父页面
+            }
+        });
+    }
+    
     function screen() {
         //获取当前窗口的宽度
         var width = $(window).width();
@@ -107,7 +114,7 @@
     }
 
 
-
+    
 
 
     function exportTable(){

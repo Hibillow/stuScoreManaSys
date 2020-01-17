@@ -27,22 +27,6 @@
 <body class="layui-unselect lau-sign-body" style="padding-top: 0px " >
 
 <form action="" class="layui-form">
-
-    <div class="layui-form-item" >
-        <div class="layui-inline">
-            <label class="layui-form-label" ><i class="iconfont layui-icon-extend-bianhao" id="" >课程号</i></label>
-            <div class="layui-input-block">
-                <input type="text" name="courseNo" placeholder="请输入课程号" autocomplete="off" class="layui-input" id="courseNo">
-            </div>
-        </div>
-
-        <div class="layui-inline">
-            <label class="layui-form-label"><i class="iconfont layui-icon-extend-ziyuan"></i>课程名</label>
-            <div class="layui-input-block">
-                <input type="text" name="name" placeholder="请输入课程名" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
     <div class="layui-form-item" >
         <div class="layui-inline">
             <label class="layui-form-label" ><i class="iconfont layui-icon-extend-bianhao" id="num" >学年</i></label>
@@ -50,7 +34,6 @@
                 <input type="text" name="courseYear" class="layui-input" id="courseYear">
             </div>
         </div>
-
         <div class="layui-inline">
             <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">学期</i></label>
             <div class="layui-input-block">
@@ -61,44 +44,11 @@
             </div>
         </div>
     </div>
-
-    <div class="layui-form-item">
+    <div class="layui-form-item" >
         <div class="layui-inline">
-            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">任课老师</i></label>
-            <div class="layui-input-block">
-                <select id="teachNo" name="teachNo" lay-verify="required"  lay-filter="teachNos" class="select" lay-search>
-                    <option value="" ></option>
-                </select>
-            </div>
+            <label class="layui-form-label"><span style="color: red">*</span>文件:</label>
+            <button type="button" class="layui-btn layui-btn-normal" id="excelFile">选择文件</button>
         </div>
-
-
-        <div class="layui-inline">
-            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">课程类型</i></label>
-            <div class="layui-input-block">
-                <select id="type" name="type" lay-verify="required"  lay-filter="types" class="select">
-                    <option value="0" >必修</option>
-                    <option value="1" >选修</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <div class="layui-form-item">
-        <div class="layui-inline">
-            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">学时</i></label>
-            <div class="layui-input-block">
-                <input type="text" name="courseHour" placeholder="请输入学时" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-inline">
-            <label class="layui-form-label"><i class="iconfont layui-icon-extend-bianhao">学分</i></label>
-            <div class="layui-input-block">
-                <input type="text" name="courseCredit" placeholder="请输入学分" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-    </div>
-
     </div>
     <div class="layui-form-item lau-sign-other" style="margin-top: 20px;text-align:center">
         <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="register" style="margin-right: 100px">提交</button>
@@ -110,23 +60,8 @@
 </body>
 <script src="/Sys/lib/layui/layui.js"></script>
 <script>
-    function getTeacher(){
-        $.ajax({
-            type:"POST",
-            url:'/Sys/queryTeacherList',  //从数据库查询返回的是个list
-            dataType: "json",
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            async: false,
-            cache: false,
-            success: function (data) {
-                $.each(data,function(index,item){
-                    $('#teachNo').append(new Option(item.text,item.value));//往下拉菜单里添加元素
-                })
-            }
-        });
-    }
+    var classNo = parent.classNo;
     $(function(){
-        getTeacher();
         var   url= '/Sys/CourseDeal/addCourse';
         layui.use('form', function() {
             var form = layui.form;

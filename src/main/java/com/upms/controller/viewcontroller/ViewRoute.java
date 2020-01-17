@@ -268,8 +268,8 @@ public class ViewRoute {
 	public String course_time_table(){
 		return "course_time_table";
 	}
-	@RequestMapping("/course_time_table_Add")
-	public String course_time_table_Add(){
-		return "course_time_table_Add";
+	@RequestMapping("/course_time_table_add")
+	public String course_time_table_add(){
+		return "course_time_table_add";
 	}
 }
