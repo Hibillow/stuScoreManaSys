@@ -26,10 +26,7 @@ public class ExcelUtil {
 
 	/**
 	 * 导出Excel
-	 * 
-	 * @param sheetName sheet名称
-	 * @param title     标题
-	 * @param values    内容
+	 *
 	 * @param wb        HSSFWorkbook对象
 	 * @return
 	 */
@@ -45,12 +42,12 @@ public class ExcelUtil {
 		return wb;
 	}
 
-	public static LinkedHashMap<String, String> excel2json(MultipartFile file) throws IOException {
+	public static LinkedHashMap<String, Object> excel2json(MultipartFile file) throws IOException {
 
 		System.out.println("excel2json方法执行....");
 
 		// 返回的map
-		LinkedHashMap<String, String> excelMap = new LinkedHashMap<>();
+		LinkedHashMap<String, Object> excelMap = new LinkedHashMap<>();
 
 		// Excel列的样式，主要是为了解决Excel数字科学计数的问题
 		CellStyle cellStyle;
@@ -123,10 +120,12 @@ public class ExcelUtil {
 				for (int k = 0; k < cellNum; k++) {
 					Cell cell = row.getCell(k);
 
-					cell.setCellStyle(cellStyle);
-					cell.setCellType(Cell.CELL_TYPE_STRING);
-					// 保存该单元格的数据到该行中
-					rowMap.put(cellNames[k], cell.getStringCellValue());
+					if(cell != null){
+						cell.setCellStyle(cellStyle);
+						cell.setCellType(Cell.CELL_TYPE_STRING);
+						// 保存该单元格的数据到该行中
+						rowMap.put(cellNames[k], cell.getStringCellValue());
+					}
 				}
 				// 保存该行的数据到该表的List中
 				list.add(rowMap);

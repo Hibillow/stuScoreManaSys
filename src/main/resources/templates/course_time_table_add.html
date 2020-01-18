@@ -26,7 +26,7 @@
 </head>
 <body class="layui-unselect lau-sign-body" style="padding-top: 0px " >
 
-<form action="" class="layui-form">
+<form action="" class="layui-form" id="Myform">
     <div class="layui-form-item" >
         <div class="layui-inline">
             <label class="layui-form-label" ><i class="iconfont layui-icon-extend-bianhao" id="num" >学年</i></label>
@@ -51,31 +51,67 @@
         </div>
     </div>
     <div class="layui-form-item lau-sign-other" style="margin-top: 20px;text-align:center">
-        <button type="button" class="layui-btn layui-btn-normal" lay-submit lay-filter="register" style="margin-right: 100px">提交</button>
+        <button type="button" id="register" class="layui-btn layui-btn-normal" lay-submit lay-filter="register" style="margin-right: 100px">提交</button>
 
     </div>
 
 </form>
 
 </body>
-<script src="/Sys/lib/layui/layui.js"></script>
 <script>
     var classNo = parent.classNo;
+    //上传文件
+    layui.use('upload', function(){
+        var upload = layui.upload;
+        //执行实例
+        upload.render({
+            elem: '#excelFile'
+            ,url: '/upimg'
+            ,auto: false
+            ,exts: 'xls|excel|xlsx'
+            ,accept:'file'//规定打开文件选择框时，筛选出的文件类型
+            ,bindAction: '#register'
+            ,before: function(obj){
+                layer.load(1, {
+                    content: '添加中...',
+                    success: function (layero) {
+                        layero.find('.layui-layer-content').css({
+                            'padding-top': '39px',
+                            'width': '60px'
+                        });
+                    }
+                });
+            }
+            ,done: function(res){
+                layer.closeAll();
+                if(res.code==0){
+                    layer.msg('添加成功', {
+                        time: 1000,
+                        icon: 1,
+                        offset: '50px'
+                    }, function () {
+                        location.reload()
+                    });
+                }
+            }
+        });
+    });
+
+
     $(function(){
-        var   url= '/Sys/CourseDeal/addCourse';
+        var   url= '/Sys/CourseTimeTableInfoDeal/addCourseTimeTable';
         layui.use('form', function() {
             var form = layui.form;
             //监听提交
             form.on('submit(register)', function(data) {
-                var loginjson= JSON.stringify(data.field);
-                var logindata=JSON.parse(loginjson);
-                data=JSON.stringify(logindata)
+                var fd = new FormData();
+                var formData = new FormData($( "#Myform" )[0]);
                 $.ajax({
                     url : url,
-                    data : data,
+                    data : formData,
                     type:'POST',
-                    dateType:'json',
-                    contentType : 'application/json',
+                    contentType: false,
+                    processData: false,
                     success:function(data){
                         if(data=="success"){
                             var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
