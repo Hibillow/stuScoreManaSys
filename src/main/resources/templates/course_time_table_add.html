@@ -106,6 +106,7 @@
             form.on('submit(register)', function(data) {
                 var fd = new FormData();
                 var formData = new FormData($( "#Myform" )[0]);
+                formData.append("classNo",classNo);
                 $.ajax({
                     url : url,
                     data : formData,

@@ -114,7 +114,7 @@
                         }
                     });
                     layer.full(index);
-                }else if(obj.event === 'showCorses'){
+                }else if(obj.event === 'showCourses'){
                     window.classJson = JSON.stringify(data);
                     var index = layer.open({
                         type: 2,
@@ -122,8 +122,8 @@
                         skin: 'layui-layer-molv',
                         shadeClose: false,
                         shade: 0.8,
-                        area:  ['700px', '450px'],
-                        content: 'class_course_tea',
+                        area: ["1200px", "600px"],
+                        content: 'course_time_table_tea',
                         end: function(){
                             window.location.reload(); //刷新父页面
                         }

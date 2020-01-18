@@ -19,11 +19,21 @@ public class CourseTimeTableServiceImpl implements CourseTimeTableService {
     CourseTimeTableMapper courseTimeTableMapper;
     @Override
     public List<CourseTimeTable> getCourseTimeTableList(Map<String, Object> map) {
-        return null;
+        return courseTimeTableMapper.getCourseTimeTableList(map);
     }
 
     @Override
     public int addCourseTimeTable(List<Map<String,Object>> mapList) {
         return courseTimeTableMapper.addCourseTimeTable(mapList);
+    }
+
+    @Override
+    public int deleteCourseTimeTable(String classNo, String courseYear) {
+        return courseTimeTableMapper.deleteCourseTimeTable(classNo,courseYear);
+    }
+
+    @Override
+    public List<Map<String, Object>> queryCourseYearList(String classNo) {
+        return courseTimeTableMapper.queryCourseYearList(classNo);
     }
 }

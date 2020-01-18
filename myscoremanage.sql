@@ -3,15 +3,15 @@
 
  Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 50610
- Source Host           : localhost:3306
+ Source Server Version : 50642
+ Source Host           : 127.0.0.1:3306
  Source Schema         : myscoremanage
 
  Target Server Type    : MySQL
- Target Server Version : 50610
+ Target Server Version : 50642
  File Encoding         : 65001
 
- Date: 18/01/2020 17:06:57
+ Date: 19/01/2020 02:27:31
 */
 
 SET NAMES utf8mb4;
@@ -77,8 +77,18 @@ CREATE TABLE `course_time_table`  (
   `jieci` int(11) NOT NULL,
   `address` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `teach_no` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `class_no` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+) ENGINE = InnoDB AUTO_INCREMENT = 35 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of course_time_table
+-- ----------------------------
+INSERT INTO `course_time_table` VALUES (30, '2019-2020', 1, '2019004', 1, 1, 'A栋4-3', '201901', '2017001');
+INSERT INTO `course_time_table` VALUES (31, '2019-2020', 1, '2019004', 2, 2, 'A栋4-2', '201901', '2017001');
+INSERT INTO `course_time_table` VALUES (32, '2019-2020', 1, '2019004', 5, 2, 'A栋4-2', '201901', '2017001');
+INSERT INTO `course_time_table` VALUES (33, '2019-2020', 1, '2019004', 3, 3, 'A栋4-2', '201901', '2017001');
+INSERT INTO `course_time_table` VALUES (34, '2019-2020', 1, '2019004', 4, 4, 'A栋4-2', '201901', '2017001');
 
 -- ----------------------------
 -- Table structure for sclass

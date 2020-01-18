@@ -10,4 +10,21 @@
         </foreach>
     </insert>
 
+    <delete id="deleteCourseTimeTable">
+        delete from course_time_table where class_no = #{0} and course_year = #{1}
+    </delete>
+    <select id="getCourseTimeTableList" resultType="com.upms.entity.CourseTimeTable">
+        select c.*,t.name as teachName, sc.name as className, co.name as courseName
+        from course_time_table c, teacher t, sclass sc, course co
+        <where>
+            c.teach_no = t.teachno and c.class_no = sc.class_no and c.course_no = co.course_no and c.class_no and c.semester = #{semester} and c.course_year = #{courseYear}
+        </where>
+    </select>
+
+    <select id="queryCourseYearList" resultType="java.util.HashMap">
+        select t.course_year as "value" ,t.course_year as "text"
+        from (select
+        distinct (course_year)
+        from course_time_table where class_no = #{classNo} order by course_no desc) t
+    </select>
 </mapper>
